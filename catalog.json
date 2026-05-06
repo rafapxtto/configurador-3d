@@ -273,142 +273,192 @@
       "grupo_id": "couro",
       "nome": "Liso",
       "hex": "#b87040",
-      "tex_color": "Couro_Color.png",
-      "tex_normal": "Couro_Normal.png",
       "price_keys": [
         "Couro TP1"
-      ]
+      ],
+      "tex_color": "Couro_Color.png",
+      "tex_normal": "Couro_Normal.png"
+    },
+    {
+      "id": "c_gran",
+      "grupo_id": "couro",
+      "nome": "Granulado",
+      "hex": "#a06030",
+      "price_keys": [
+        "Couro TP1"
+      ],
+      "tex_color": "Couro_Color.png",
+      "tex_normal": "Couro_Normal.png"
+    },
+    {
+      "id": "c_env",
+      "grupo_id": "couro",
+      "nome": "Envelhecido",
+      "hex": "#7a3a18",
+      "price_keys": [
+        "Couro TP1"
+      ],
+      "tex_color": "Couro_Color.png",
+      "tex_normal": "Couro_Normal.png"
+    },
+    {
+      "id": "c_nat",
+      "grupo_id": "couro",
+      "nome": "Natural",
+      "hex": "#d4a070",
+      "price_keys": [
+        "Couro TP1"
+      ],
+      "tex_color": "Couro_Color (1).png",
+      "tex_normal": "Couro_Normal.png"
+    },
+    {
+      "id": "c_tp1",
+      "grupo_id": "couro",
+      "nome": "Couro TP1",
+      "hex": "#b87040",
+      "price_keys": [
+        "Couro TP1"
+      ],
+      "tex_color": "Couro_Color.png",
+      "tex_normal": "Couro_Normal.png"
+    },
+    {
+      "id": "c_t4",
+      "grupo_id": "couro",
+      "nome": "Couro T4",
+      "hex": "#7a3018",
+      "price_keys": [
+        "Couro T4"
+      ],
+      "tex_color": "Couro_2_Color.png",
+      "tex_normal": "Couro_2_Normal.png"
+    },
+    {
+      "id": "t_chen",
+      "grupo_id": "tecido",
+      "nome": "Chenille",
+      "hex": "#7a9a88",
+      "price_keys": [
+        "Tecido Tipo A"
+      ],
+      "tex_color": "Tecido_Color.png",
+      "tex_normal": "Tecido_Normal.png"
+    },
+    {
+      "id": "t_bou",
+      "grupo_id": "tecido",
+      "nome": "Bouclê",
+      "hex": "#8aaa98",
+      "price_keys": [
+        "Tecido Tipo A"
+      ],
+      "tex_color": "Tecido_Color.png",
+      "tex_normal": "Tecido_Normal.png"
+    },
+    {
+      "id": "t_vel",
+      "grupo_id": "tecido",
+      "nome": "Veludo",
+      "hex": "#607868",
+      "price_keys": [
+        "Tecido Tipo A"
+      ],
+      "tex_color": "Tecido_Color.png",
+      "tex_normal": "Tecido_Normal.png"
+    },
+    {
+      "id": "t_lin",
+      "grupo_id": "tecido",
+      "nome": "Linho",
+      "hex": "#b0c0b0",
+      "price_keys": [
+        "Tecido Tipo A"
+      ],
+      "tex_color": "Tecido_Color (1).png",
+      "tex_normal": "Tecido_Normal.png"
     },
     {
       "id": "t_tipoA",
       "grupo_id": "tecido",
       "nome": "Tipo A",
       "hex": "#7a9a88",
-      "tex_color": "Tecido_Color.png",
-      "tex_normal": "Tecido_Normal.png",
       "price_keys": [
-        "TECIDO A"
-      ]
+        "Tecido Tipo A"
+      ],
+      "tex_color": "Tecido_Color.png",
+      "tex_normal": "Tecido_Normal.png"
     },
     {
       "id": "t_tipoB",
       "grupo_id": "tecido",
       "nome": "Tipo B",
       "hex": "#4a6a58",
-      "tex_color": "Tecido_Color (1).png",
-      "tex_normal": "Tecido_Normal.png",
       "price_keys": [
-        "TECIDO B"
-      ]
+        "Tecido Tipo B"
+      ],
+      "tex_color": "Tecido_Color (1).png",
+      "tex_normal": "Tecido_Normal.png"
     },
     {
       "id": "m_car",
       "grupo_id": "madeira",
       "nome": "Carvalho",
       "hex": "#c09060",
-      "tex_color": "Madeira_Color.png",
-      "tex_normal": "",
       "price_keys": [
         "Couro TP1"
-      ]
+      ],
+      "tex_color": "Madeira_Color.png",
+      "tex_normal": ""
     },
     {
       "id": "m_nog",
       "grupo_id": "madeira",
       "nome": "Nogueira",
       "hex": "#7a5028",
-      "tex_color": "Madeira_Color.png",
-      "tex_normal": "",
       "price_keys": [
         "Couro TP1"
-      ]
-    },
-    {
-      "id": "ac_mou3tqcnjh4p",
-      "grupo_id": "couro",
-      "nome": "La Paz",
-      "hex": "#6e5545",
-      "tex_color": "",
-      "tex_normal": "",
-      "price_keys": [
-        "COURO TP3",
-        "COURO T3"
-      ]
-    },
-    {
-      "id": "ac_mou40kdyh9no",
-      "grupo_id": "tecido",
-      "nome": "Tipo C",
-      "hex": "#b87040",
-      "price_keys": [
-        "TECIDO C"
       ],
-      "tex_color": "",
-      "tex_normal": ""
-    },
-    {
-      "id": "ac_mou40woe23qj",
-      "grupo_id": "tecido",
-      "nome": "Matizes",
-      "hex": "#e5ab85",
-      "price_keys": [
-        "TECIDO D"
-      ],
-      "tex_color": "",
+      "tex_color": "Madeira_Color.png",
       "tex_normal": ""
     }
   ],
   "tipos_preco": [
     {
-      "id": "tp_mou3rkwp2qsf",
-      "nome": "Couro TP1"
-    },
-    {
-      "id": "tp_mou3rkwpmxoe",
-      "nome": "COURO TP2"
-    },
-    {
-      "id": "tp_mou3rkwpmtg5",
-      "nome": "COURO TP3"
-    },
-    {
-      "id": "tp_mou3rkwp145p",
+      "id": "tp_moufx5qj26zw",
       "nome": "COURO T1"
     },
     {
-      "id": "tp_mou3rkwpaykd",
+      "id": "tp_moufx5qjxu5v",
       "nome": "COURO T2"
     },
     {
-      "id": "tp_mou3rkwphuo0",
+      "id": "tp_moufx5qjxbi9",
       "nome": "COURO T3"
     },
     {
-      "id": "tp_mou3rkwp42h2",
+      "id": "tp_moufx5qjs4hx",
       "nome": "COURO T4"
     },
     {
-      "id": "tp_mou3rkwpkx8u",
+      "id": "tp_moufx5qj5t8l",
       "nome": "TECIDO A"
     },
     {
-      "id": "tp_mou3rkwp2cg9",
+      "id": "tp_moufx5qjbegg",
       "nome": "TECIDO B"
     },
     {
-      "id": "tp_mou3rkwp7q7z",
+      "id": "tp_moufx5qjb71b",
       "nome": "TECIDO C"
     },
     {
-      "id": "tp_mou3rkwpsvc9",
+      "id": "tp_moufx5qj7uxg",
       "nome": "TECIDO D"
     }
   ],
   "precos": {
     "Hiato_1BR_2ASS": {
-      "Couro TP1": null,
-      "COURO TP2": null,
-      "COURO TP3": null,
       "COURO T1": null,
       "COURO T2": null,
       "COURO T3": null,
@@ -419,9 +469,6 @@
       "TECIDO D": 15371
     },
     "Hiato_1BR_1ASS": {
-      "Couro TP1": null,
-      "COURO TP2": null,
-      "COURO TP3": null,
       "COURO T1": null,
       "COURO T2": null,
       "COURO T3": null,
@@ -432,9 +479,6 @@
       "TECIDO D": 12507
     },
     "Hiato_SBR": {
-      "Couro TP1": null,
-      "COURO TP2": null,
-      "COURO TP3": null,
       "COURO T1": null,
       "COURO T2": null,
       "COURO T3": null,
@@ -445,9 +489,6 @@
       "TECIDO D": 8588
     },
     "Hiato_Chaise": {
-      "Couro TP1": null,
-      "COURO TP2": null,
-      "COURO TP3": null,
       "COURO T1": null,
       "COURO T2": null,
       "COURO T3": null,
@@ -458,9 +499,6 @@
       "TECIDO D": 18946
     },
     "Hiato_Mesa": {
-      "Couro TP1": null,
-      "COURO TP2": null,
-      "COURO TP3": null,
       "COURO T1": 3850,
       "COURO T2": 4372,
       "COURO T3": 4674,
@@ -471,9 +509,7 @@
       "TECIDO D": null
     },
     "Pier_1BR_2ASS": {},
-    "Pier_1BR": {
-      "TECIDO A": null
-    },
+    "Pier_1BR": {},
     "Pier_SBR": {},
     "Pier_Mesa": {},
     "Pier_Canto": {},

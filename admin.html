@@ -386,7 +386,22 @@ function loadDB() {
   } catch(e){}
   return JSON.parse(JSON.stringify(DEFAULTS));
 }
-function saveDB() { localStorage.setItem('admin_catalog', JSON.stringify(DB)); }
+function saveDB() {
+  localStorage.setItem('admin_catalog', JSON.stringify(DB));
+  _publishCatalog();
+}
+
+async function _publishCatalog() {
+  try {
+    const r = await fetch('/admin/save-catalog', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(DB)
+    });
+    const d = await r.json();
+    if (!d.ok) console.warn('[Admin] save-catalog:', d.error);
+  } catch(e) { /* servidor local pode não ter o endpoint */ }
+}
 function uid(p) { return p + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
 // ── ABAS ─────────────────────────────────────────────────────────────────────
