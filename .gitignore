@@ -1,0 +1,7 @@
+exports/
+glb_otimizados/
+__pycache__/
+*.pyc
+.DS_Store
+Tabela*.xlsx
+*.dae

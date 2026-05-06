@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configurador 3D</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f1ec;--panel:#fff;--border:#e0d8cf;
+  --accent:#8b6f4e;--accent2:#c4a882;
+  --text:#2c2418;--text2:#7a6a58;
+  --danger:#c0392b;--radius:8px;
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:var(--bg);color:var(--text);
+  height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{display:flex;align-items:center;gap:12px;padding:10px 20px;
+  background:var(--panel);border-bottom:1px solid var(--border);
+  box-shadow:var(--shadow);z-index:10;flex-shrink:0;flex-wrap:wrap}
+.logo-mark{width:32px;height:32px;background:var(--accent);border-radius:6px;
+  display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
+.logo-text{font-size:16px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.model-name{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
+.header-sel{display:flex;align-items:center;gap:6px;margin-left:8px}
+.header-sel label{font-size:11px;color:var(--text2)}
+.header-sel select{background:var(--panel);color:var(--text);border:1px solid var(--border);
+  border-radius:4px;padding:3px 8px;font-size:12px;cursor:pointer}
+.hdr-btn{padding:7px 13px;border:none;border-radius:6px;cursor:pointer;
+  font-size:12px;font-weight:600;transition:all .2s}
+.btn-outline{background:transparent;color:var(--accent);border:1.5px solid var(--accent2)}
+.btn-outline:hover{background:#f0e9df}
+.btn-primary{background:var(--accent);color:#fff;border:1.5px solid var(--accent)}
+.btn-primary:hover{background:#7a5f40}
+.hdr-spacer{flex:1}
+.main{display:flex;flex:1;overflow:hidden}
+.left-panel{width:220px;background:var(--panel);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.tab-bar{display:flex;border-bottom:2px solid var(--border);flex-shrink:0}
+.tab-btn{flex:1;padding:10px 4px;border:none;background:transparent;cursor:pointer;
+  font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--text2);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s}
+.tab-btn:hover{color:var(--accent);background:#faf7f3}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{flex:1;overflow-y:auto;display:none;flex-direction:column}
+.tab-content.active{display:flex}
+.panel-section{padding:12px}
+.panel-title{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--text2);margin-bottom:8px}
+.divider{height:1px;background:var(--border);flex-shrink:0}
+.module-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.module-card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:8px 4px;cursor:pointer;transition:all .2s;text-align:center;user-select:none}
+.module-card:hover{border-color:var(--accent);background:#f9f2e8;transform:translateY(-1px)}
+.module-card:active{transform:translateY(0)}
+.module-icon{font-size:20px;line-height:1;margin-bottom:3px}
+.module-label{font-size:10px;font-weight:600;color:var(--text);line-height:1.3}
+.module-dims{font-size:9px;color:var(--text2);margin-top:1px}
+.flip-row{display:flex;align-items:center;gap:6px;padding:6px 12px 10px}
+.flip-row label{font-size:11px;color:var(--text2);cursor:pointer}
+.flip-row input{cursor:pointer;accent-color:var(--accent)}
+.mat-card{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--radius);
+  margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.mat-card.open{border-color:var(--accent2)}
+.mat-header{display:flex;align-items:center;gap:8px;padding:9px 10px;cursor:pointer;user-select:none}
+.mat-header:hover{background:#f5efe7}
+.mat-icon{font-size:17px}
+.mat-name{font-size:12px;font-weight:700;color:var(--text);flex:1}
+.mat-preview{width:18px;height:18px;border-radius:4px;border:1px solid var(--border);
+  background-size:cover;background-position:center;flex-shrink:0}
+.mat-chevron{font-size:10px;color:var(--text2);transition:transform .2s}
+.mat-card.open .mat-chevron{transform:rotate(180deg)}
+.mat-body{display:none;padding:10px;border-top:1px solid var(--border)}
+.mat-card.open .mat-body{display:block}
+.swatch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:8px}
+.swatch-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer}
+.swatch{width:100%;aspect-ratio:1;border-radius:5px;border:3px solid transparent;
+  transition:all .2s;background-size:cover;background-position:center}
+.swatch:hover{transform:scale(1.07)}
+.swatch.active{border-color:var(--accent);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--accent)}
+.swatch-name{font-size:9px;text-align:center;color:var(--text2);margin-top:2px;line-height:1.2}
+.upload-row{display:flex;align-items:center;gap:5px;margin-bottom:6px}
+.upload-lbl{font-size:10px;color:var(--text2);min-width:60px;font-weight:600}
+.upload-btn{flex:1;padding:5px 6px;font-size:10px;font-weight:600;background:#fff;
+  border:1.5px dashed var(--border);border-radius:5px;cursor:pointer;color:var(--text2);
+  text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:all .2s}
+.upload-btn:hover{border-color:var(--accent);color:var(--accent)}
+.upload-btn.loaded{border-style:solid;border-color:var(--accent);color:var(--accent);background:#f0e9df}
+.upload-rm{background:none;border:none;cursor:pointer;color:#bbb;font-size:12px;
+  padding:0 2px;transition:color .2s;flex-shrink:0}
+.upload-rm:hover{color:var(--danger)}
+.slider-row{display:flex;align-items:center;gap:6px;margin-bottom:6px;padding:0 0 2px}
+.slider-lbl{font-size:10px;color:var(--text2);min-width:60px;font-weight:600}
+.slider-row input[type=range]{flex:1;accent-color:var(--accent);height:3px;cursor:pointer}
+.slider-val{font-size:10px;color:var(--text2);min-width:28px;text-align:right;font-weight:600}
+.viewport{flex:1;position:relative;overflow:hidden;background:#e8e3dc}
+#canvas{display:block;width:100%;height:100%}
+.viewport-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.4);color:#fff;font-size:11px;padding:5px 13px;
+  border-radius:20px;pointer-events:none;white-space:nowrap}
+.vp-controls{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:6px}
+.view-btn{width:30px;height:30px;background:#fff;border:1px solid var(--border);
+  border-radius:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:13px;box-shadow:var(--shadow);transition:all .2s}
+.view-btn:hover{background:#f0e9df;border-color:var(--accent)}
+/* Rotation panel */
+#rotPanel{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);
+  background:#fff;border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.12);
+  display:none;z-index:30;min-width:320px}
+.rot-title{font-size:11px;font-weight:700;color:var(--text);margin-bottom:10px;
+  display:flex;align-items:center;justify-content:space-between}
+.rot-close{background:none;border:none;cursor:pointer;font-size:14px;color:var(--text2);
+  padding:0;line-height:1}
+.rot-close:hover{color:var(--danger)}
+.rot-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.rot-lbl{font-size:10px;font-weight:700;color:var(--text2);width:14px;text-align:center}
+.rot-row input[type=range]{flex:1;accent-color:var(--accent);cursor:pointer}
+.rot-val{font-size:10px;color:var(--text2);width:36px;text-align:right;font-weight:600}
+.rot-btns{display:flex;gap:6px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.rot-preset{flex:1;padding:5px 4px;background:var(--bg);border:1px solid var(--border);
+  border-radius:5px;cursor:pointer;font-size:10px;font-weight:600;color:var(--text2);
+  transition:all .2s;text-align:center}
+.rot-preset:hover{border-color:var(--accent);color:var(--accent);background:#f0e9df}
+#spinnerOverlay{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:rgba(232,227,220,.85);
+  z-index:20;pointer-events:none}
+.spinner{width:34px;height:34px;border:3px solid var(--border);
+  border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-text{margin-top:9px;font-size:13px;color:var(--text2)}
+.bottom-bar{background:var(--panel);border-top:1px solid var(--border);
+  padding:9px 16px;display:flex;align-items:flex-end;gap:9px;
+  min-height:110px;overflow-x:auto;flex-shrink:0}
+.bottom-label{font-size:10px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;
+  color:var(--text2);white-space:nowrap;align-self:flex-start;margin-top:2px}
+.comp-items{display:flex;gap:6px;align-items:flex-end;flex:1;overflow-x:auto;padding-bottom:0}
+.pill{display:flex;align-items:center;gap:5px;background:#f0e9df;
+  border:1.5px solid var(--accent2);border-radius:9px;padding:5px 7px 5px 5px;
+  font-size:12px;white-space:nowrap;flex-shrink:0}
+.pill-icon{font-size:14px;line-height:1}
+.pill-info{display:flex;flex-direction:column;gap:1px}
+.pill-name{font-size:11px;font-weight:700;color:var(--text);line-height:1.2}
+.pill-dims{font-size:9px;color:var(--text2)}
+.pill-price{font-size:9px;font-weight:800;color:var(--accent);margin-top:1px;line-height:1.2}
+/* Cota de medida visual — bloco canvas */
+.cota-wrap{flex-shrink:0;position:relative}
+/* Bloco único — conteúdo + cota dentro do mesmo elemento */
+.cota-block{
+  background:#f5f0ea;border:1.5px solid var(--accent2);border-radius:8px;
+  display:flex;flex-direction:column;align-items:center;
+  transition:border-color .2s;position:relative;overflow:hidden;
+  cursor:default}
+.cota-block:hover{border-color:var(--accent)}
+/* Área de conteúdo (ícone, nome, preço) */
+.cota-content{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding:10px 8px 8px;flex:1;width:100%}
+.cota-icon{font-size:20px;line-height:1}
+.cota-name{font-size:10px;font-weight:800;color:var(--accent);text-align:center;
+  line-height:1.3;word-break:break-word}
+.cota-dim-prof{font-size:8px;color:var(--text2);text-align:center;line-height:1.4}
+.cota-price-tag{font-size:9px;font-weight:900;color:var(--accent);text-align:center;
+  background:rgba(139,111,78,.15);border-radius:4px;padding:2px 6px;margin-top:1px;line-height:1.5}
+/* Régua de cota — dentro do bloco, na base */
+.cota-ruler{
+  width:100%;height:22px;flex-shrink:0;
+  border-top:1px solid var(--accent2);background:#fff;
+  position:relative;display:flex;align-items:center;box-sizing:border-box}
+/* Traços verticais nas extremidades (como na imagem técnica) */
+.cota-ruler::before,.cota-ruler::after{
+  content:'';position:absolute;top:50%;transform:translateY(-50%);
+  width:1.5px;height:12px;background:var(--accent)}
+.cota-ruler::before{left:4px}
+.cota-ruler::after{right:4px}
+/* Linha com setas */
+.cota-line{
+  position:absolute;left:10px;right:10px;top:50%;transform:translateY(-50%);
+  height:1px;background:var(--accent2)}
+.cota-arrow-l,.cota-arrow-r{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:0;height:0}
+.cota-arrow-l{left:10px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-right:6px solid var(--accent2)}
+.cota-arrow-r{right:10px;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:6px solid var(--accent2)}
+/* Valor centralizado sobre a linha */
+.cota-ruler-label{
+  position:absolute;left:50%;transform:translateX(-50%);
+  font-size:9px;font-weight:900;color:var(--accent);
+  background:#fff;padding:0 4px;white-space:nowrap;letter-spacing:.3px}
+.pill-flip{background:none;border:none;cursor:pointer;color:var(--text2);
+  font-size:11px;padding:0 2px;transition:color .2s}
+.pill-flip:hover{color:var(--accent)}
+.pill-rm{background:none;border:none;cursor:pointer;color:#bbb;
+  font-size:11px;padding:0 2px;transition:color .2s}
+.pill-rm:hover{color:var(--danger)}
+.empty-comp{font-size:13px;color:#bbb;font-style:italic}
+.total-badge{font-size:11px;color:var(--text2);white-space:nowrap;margin-left:auto;
+  background:#f0e9df;padding:5px 12px;border-radius:9px;flex-shrink:0;
+  border:1px solid var(--accent2);align-self:center}
+#loadOverlay{position:fixed;inset:0;background:rgba(244,241,236,.97);
+  display:flex;align-items:center;justify-content:center;z-index:100}
+.load-box{background:#fff;border-radius:14px;padding:36px 42px;text-align:center;
+  box-shadow:0 8px 40px rgba(0,0,0,.12);max-width:360px;width:90%}
+.load-logo{font-size:44px;margin-bottom:10px}
+.load-title{font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.load-sub{font-size:13px;color:var(--text2);margin-bottom:22px;line-height:1.5}
+.load-btn{display:block;width:100%;padding:12px;background:var(--accent);color:#fff;
+  border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;
+  margin-bottom:8px;transition:background .2s}
+.load-btn:hover{background:#7a6040}
+.load-note{font-size:11px;color:#aaa;line-height:1.5}
+#progressBar{position:fixed;top:0;left:0;right:0;height:3px;z-index:200}
+#progressFill{height:100%;background:var(--accent);width:0%;transition:width .3s}
+.notif{position:fixed;top:62px;right:14px;background:#2c2418;color:#fff;
+  padding:9px 15px;border-radius:8px;font-size:13px;z-index:300;
+  animation:notifIn .25s;pointer-events:none}
+@keyframes notifIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+/* Tooltip hover no módulo 3D */
+#mod-tooltip{
+  position:fixed;pointer-events:none;z-index:500;
+  background:rgba(44,36,24,.92);color:#fff;
+  border-radius:8px;padding:8px 12px;font-size:12px;line-height:1.6;
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+  opacity:0;transition:opacity .15s ease;
+  white-space:nowrap;min-width:140px}
+#mod-tooltip.visible{opacity:1}
+#mod-tooltip .tt-name{font-weight:800;font-size:13px;margin-bottom:2px;color:var(--accent2)}
+#mod-tooltip .tt-dim{font-size:11px;color:#d0c4b4}
+#mod-tooltip .tt-price{font-size:11px;font-weight:700;color:#f0c080;margin-top:3px}
+</style>
+</head>
+<body>
+<div id="progressBar"><div id="progressFill"></div></div>
+<div id="mod-tooltip"><div class="tt-name"></div><div class="tt-dim"></div><div class="tt-price"></div></div>
+<div id="loadOverlay">
+  <div class="load-box">
+    <div class="load-logo">&#x1F6CB;&#xFE0F;</div>
+    <div class="load-title" id="loadTitle">CONFIGURADOR</div>
+    <div class="load-sub" id="loadSub">Selecione a pasta com os<br>arquivos <strong>.glb</strong> dos m&#xF3;dulos</div>
+    <button class="load-btn" id="btnSelectFolder">&#x1F4C1; Selecionar Pasta</button>
+    <div class="load-note">Dica: use o ABRIR.command para abrir sem este passo.</div>
+  </div>
+</div>
+<div id="app" style="display:none;flex-direction:column;height:100vh">
+  <header>
+    <div class="logo-mark" id="logoMark">S</div>
+    <div>
+      <div class="logo-text" id="logoText">Salva</div>
+      <div class="model-name" id="modelName">Cole&#xE7;&#xE3;o Hiato</div>
+    </div>
+    <div class="header-sel">
+      <select id="selBrand" style="display:none"><option value="salva">Salva</option></select>
+      <label style="font-size:10px;color:var(--text2);font-weight:600;letter-spacing:.5px;text-transform:uppercase">Coleção</label>
+      <select id="selProd" onchange="onProdChange()" style="background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:6px;padding:5px 10px;font-size:13px;font-weight:700;cursor:pointer;min-width:100px">
+      </select>
+    </div>
+    <div class="hdr-spacer"></div>
+    <button class="hdr-btn btn-outline" id="btnReset">&#x21BA; Resetar</button>
+    <button class="hdr-btn btn-outline" id="btnTrocarPasta" style="display:none">&#x1F4C1; Trocar Pasta</button>
+    <button class="hdr-btn btn-outline" id="btnExportGLB">&#x1F4E6; Exportar GLB</button>
+    <button class="hdr-btn btn-primary" id="btnPDF">&#x1F4C4; PDF</button>
+  </header>
+  <div class="main">
+    <div class="left-panel">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="modulos">&#x1F9E9; M&#xF3;dulos</button>
+        <button class="tab-btn" data-tab="materiais">&#x1F3A8; Materiais</button>
+      </div>
+      <div class="tab-content active" id="tab-modulos">
+        <div class="panel-section">
+          <div class="panel-title">Adicionar m&#xF3;dulos</div>
+          <div class="module-grid" id="moduleGrid"></div>
+          <div class="flip-row">
+            <input type="checkbox" id="chkFlip">
+            <label for="chkFlip">Espelhar ao adicionar</label>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="panel-section">
+          <div class="panel-title">&#x1F4A1; Dica</div>
+          <p style="font-size:11px;color:var(--text2);line-height:1.6">
+            Clique nos m&#xF3;dulos para montar.<br>
+            Use <strong>&#x21C4;</strong> nas p&#xED;lulas para espelhar.<br>
+            Configure materiais na aba <strong>Materiais</strong>.
+          </p>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-materiais">
+        <div class="panel-section" id="matContainer"></div>
+      </div>
+    </div>
+    <div class="viewport">
+      <canvas id="canvas"></canvas>
+      <div id="spinnerOverlay" style="display:none">
+        <div class="spinner"></div>
+        <div class="spinner-text" id="spinnerText">Carregando...</div>
+      </div>
+      <div class="viewport-hint" id="vpHint">&#x1F5B1; Arrastar=girar &middot; Scroll=zoom &middot; Shift+arrastar=mover</div>
+      <div class="vp-controls">
+        <button class="view-btn" id="btnFit" title="Enquadrar">&#x26F6;</button>
+        <button class="view-btn" id="btnTop" title="Vista de cima">&#x2299;</button>
+      </div>
+      <!-- Rotation adjustment panel -->
+      <div id="rotPanel">
+        <div class="rot-title">
+          <span id="rotPanelTitle">Ajustar rotacao</span>
+          <button class="rot-close" id="rotClose">&#x2715;</button>
+        </div>
+        <div class="rot-row">
+          <div class="rot-lbl">X</div>
+          <input type="range" min="-180" max="180" value="0" id="rotX">
+          <div class="rot-val" id="rotXVal">0°</div>
+        </div>
+        <div class="rot-row">
+          <div class="rot-lbl">Y</div>
+          <input type="range" min="-180" max="180" value="0" id="rotY">
+          <div class="rot-val" id="rotYVal">0°</div>
+        </div>
+        <div class="rot-row">
+          <div class="rot-lbl">Z</div>
+          <input type="range" min="-180" max="180" value="0" id="rotZ">
+          <div class="rot-val" id="rotZVal">0°</div>
+        </div>
+        <div class="rot-btns">
+          <button class="rot-preset" id="btnRotReset" onclick="resetRotToBase()" style="background:#f0e9df;border-color:var(--accent);color:var(--accent);font-weight:700">Reset</button>
+          <button class="rot-preset" onclick="applyRotPreset(-90,0,0)">X -90°</button>
+          <button class="rot-preset" onclick="applyRotPreset(0,90,0)">Y +90°</button>
+          <button class="rot-preset" onclick="applyRotPreset(0,-90,0)">Y -90°</button>
+          <button class="rot-preset" onclick="applyRotPreset(0,180,0)">Y 180°</button>
+          <button class="rot-preset" onclick="applyRotPreset(-90,90,0)">X-90 Y90</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom-bar">
+    <div class="bottom-label">Composi&#xE7;&#xE3;o</div>
+    <div class="comp-items" id="compItems">
+      <div class="empty-comp">Nenhum m&#xF3;dulo adicionado</div>
+    </div>
+    <div class="total-badge" id="totalBadge">0 m&#xF3;dulos &middot; 0,00m</div>
+    <div id="pricePanel" style="display:none;align-items:center;gap:4px;padding:5px 12px;background:#fff7ef;border:1.5px solid var(--accent2);border-radius:9px;flex-shrink:0;margin-left:8px;white-space:nowrap"></div>
+  </div>
+</div>
+<script type="module">
+
+// ── THREE.JS IMPORTS ───────────────────────────────────────────────────────
+import * as THREE        from 'https://esm.sh/three@0.160.0';
+import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader }    from 'https://esm.sh/three@0.160.0/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader }   from 'https://esm.sh/three@0.160.0/examples/jsm/loaders/DRACOLoader.js';
+import { GLTFExporter }  from 'https://esm.sh/three@0.160.0/examples/jsm/exporters/GLTFExporter.js';
+
+// ── CATALOG LOADER ─────────────────────────────────────────────────────────
+const _NAME_MATCH = {
+  couro:   n => n.toLowerCase().includes('leather'),
+  tecido:  n => n.toLowerCase().includes('fabric'),
+  madeira: n => n.toLowerCase().includes('wood') || n.toLowerCase().includes('walnut') || n.toLowerCase().includes('veneer'),
+  metal:   n => n.toLowerCase().includes('metal'),
+  marmore: n => n.toLowerCase().includes('marble'),
+  vidro:   n => n.toLowerCase().includes('glass')
+};
+const _MAT_PROPS = {
+  couro:   {roughness:0.75, metalness:0.0},
+  tecido:  {roughness:0.90, metalness:0.0},
+  madeira: {roughness:0.80, metalness:0.0},
+  metal:   {roughness:0.30, metalness:0.85},
+  marmore: {roughness:0.30, metalness:0.0},
+  vidro:   {roughness:0.10, metalness:0.0}
+};
+
+let _catalogData = {};
+try {
+  const _r = await fetch('catalog.json');
+  if (_r.ok) _catalogData = await _r.json();
+} catch(e) { console.warn('[Configurador] catalog.json não encontrado, usando padrão embutido'); }
+
+function _buildCatalog(cat) {
+  const out = {};
+  (cat.marcas||[]).forEach(marca => {
+    const prods = {};
+    (cat.produtos||[]).filter(p=>p.marca_id===marca.id).forEach(prod => {
+      prods[prod.id] = {
+        label: prod.nome,
+        mats: prod.grupos_mat||[],
+        modules: (cat.modulos||[]).filter(m=>m.produto_id===prod.id).map(m => ({
+          key:   m.id,
+          label: m.label,
+          icon:  m.icon||'📦',
+          dims:  `${m.dimsL||'?'} x ${m.dimsP||'?'}m`,
+          dimsL: m.dimsL, dimsP: m.dimsP, dimsA: m.dimsA,
+          file:  m.file||''
+        }))
+      };
+    });
+    out[marca.id] = { label: marca.nome, initial: marca.nome[0], products: prods };
+  });
+  return out;
+}
+
+function _buildMatDefs(cat) {
+  return (cat.grupos_acabamento||[]).map(g => {
+    const props = _MAT_PROPS[g.id] || {roughness:0.75, metalness:0.0};
+    return {
+      id: g.id, label: g.nome, icon: g.icon||'',
+      nameMatch: _NAME_MATCH[g.id] || (()=>false),
+      roughness: props.roughness, metalness: props.metalness,
+      swatches: (cat.acabamentos||[]).filter(a=>a.grupo_id===g.id).map(a => ({
+        id:         a.id,
+        label:      a.nome,
+        color:      a.tex_color  || null,
+        normal:     a.tex_normal || null,
+        solidColor: a.hex        || null,
+        priceKey:   (a.price_keys||[])[0] || null,
+        priceKeys:  a.price_keys||[]
+      }))
+    };
+  });
+}
+
+// ── PRODUCT CATALOG ────────────────────────────────────────────────────────
+const CATALOG = _buildCatalog(_catalogData);
+
+// ── MATERIAL DEFINITIONS ───────────────────────────────────────────────────
+const MAT_DEFS = _buildMatDefs(_catalogData);
+
+const matState = {};
+MAT_DEFS.forEach(function(d){ matState[d.id] = {
+  swatchIdx:-1, colorUrl:null, normalUrl:null,  // -1 = nenhum acabamento selecionado
+  texIntensity:1.0, normalIntensity:1.0,
+  roughness: d.roughness, metalness: d.metalness
+}; });
+
+// ── APP STATE ──────────────────────────────────────────────────────────────
+const IS_HTTP   = location.protocol.startsWith('http');
+const IN_IFRAME = new URLSearchParams(location.search).get('embedded') === '1';
+const _urlProd  = new URLSearchParams(location.search).get('prod') || 'hiato';
+let dirHandle   = null;
+let gltfCache   = {};
+let placed      = [];
+let isLoading   = false;
+let curBrand    = Object.keys(CATALOG)[0] || 'salva';
+let _firstProd  = Object.keys((CATALOG[curBrand]||{}).products||{})[0] || 'hiato';
+let curProd     = ((CATALOG[curBrand]||{}).products||{})[_urlProd] ? _urlProd : _firstProd;
+let MODULE_DEFS = ((CATALOG[curBrand]||{}).products||{})[curProd]?.modules || [];
+
+// ── THREE.JS SETUP ─────────────────────────────────────────────────────────
+const canvas   = document.getElementById('canvas');
+const renderer = new THREE.WebGLRenderer({canvas:canvas, antialias:true, preserveDrawingBuffer:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace  = THREE.SRGBColorSpace;
+renderer.toneMapping       = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+
+const scene  = new THREE.Scene();
+scene.background = new THREE.Color(0xe8e3dc);
+scene.fog = new THREE.Fog(0xe8e3dc, 12, 24);
+
+const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 100);
+camera.position.set(2.5, 2.0, 5);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping  = true;
+controls.dampingFactor  = 0.07;
+controls.minDistance    = 0.5;
+controls.maxDistance    = 20;
+controls.maxPolarAngle  = Math.PI / 2.05;
+controls.target.set(0, 0.3, 0);
+controls.update();
+
+scene.add(new THREE.AmbientLight(0xfff5e6, 0.95));
+const sun = new THREE.DirectionalLight(0xfff0d0, 2.2);
+sun.position.set(5, 8, 4);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xe8f0ff, 0.7);
+fill.position.set(-4, 3, -2);
+scene.add(fill);
+
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(30, 30),
+  new THREE.MeshStandardMaterial({color:0xd8d0c4, roughness:0.95, metalness:0})
+);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+function animate() { requestAnimationFrame(animate); controls.update(); renderer.render(scene, camera); }
+animate();
+
+function onResize() {
+  const vp = canvas.parentElement;
+  renderer.setSize(vp.clientWidth, vp.clientHeight);
+  camera.aspect = vp.clientWidth / vp.clientHeight;
+  camera.updateProjectionMatrix();
+}
+window.addEventListener('resize', onResize);
+
+// ── HOVER TOOLTIP (módulo 3D) ──────────────────────────────────────────────
+const raycaster  = new THREE.Raycaster();
+const mouseVec   = new THREE.Vector2();
+const tooltip    = document.getElementById('mod-tooltip');
+let   hoveredId  = null;
+
+canvas.addEventListener('mousemove', function(e){
+  if (!placed.length) { hideTooltip(); return; }
+  const rect = canvas.getBoundingClientRect();
+  mouseVec.x =  ((e.clientX - rect.left)  / rect.width)  * 2 - 1;
+  mouseVec.y = -((e.clientY - rect.top)   / rect.height) * 2 + 1;
+  raycaster.setFromCamera(mouseVec, camera);
+
+  // Coleta todos os meshes de todos os módulos placed
+  let hit = null;
+  for (const p of placed) {
+    const meshes = [];
+    p.obj.traverse(function(c){ if (c.isMesh) meshes.push(c); });
+    const hits = raycaster.intersectObjects(meshes, false);
+    if (hits.length) {
+      hit = p;
+      break;
+    }
+  }
+
+  if (hit) {
+    if (hoveredId !== hit.id) {
+      hoveredId = hit.id;
+      // Monta conteúdo
+      const d = hit.def;
+      tooltip.querySelector('.tt-name').textContent = d.label + (hit.flipped ? ' ⇄' : '');
+      tooltip.querySelector('.tt-dim').textContent  =
+        'Larg: ' + (d.dimsL||'-') + 'm  ·  Prof: ' + (d.dimsP||'-') + 'm  ·  Alt: ' + (d.dimsA||'-') + 'm';
+      // Preço
+      const pk = getActivePriceKey();
+      let priceStr = '';
+      if (pk && HIATO_PRICE_FULL[hit.key] && HIATO_PRICE_FULL[hit.key][pk] != null) {
+        priceStr = pk + ': R$ ' + HIATO_PRICE_FULL[hit.key][pk].toLocaleString('pt-BR');
+      }
+      tooltip.querySelector('.tt-price').textContent = priceStr;
+    }
+    tooltip.style.left = (e.clientX + 16) + 'px';
+    tooltip.style.top  = (e.clientY - 10) + 'px';
+    tooltip.classList.add('visible');
+  } else {
+    hideTooltip();
+  }
+});
+
+canvas.addEventListener('mouseleave', function(){ hideTooltip(); });
+
+function hideTooltip() {
+  hoveredId = null;
+  tooltip.classList.remove('visible');
+}
+
+// ── TEXTURE HELPERS ────────────────────────────────────────────────────────
+const texLoader = new THREE.TextureLoader();
+const texCache  = {};
+
+function loadTex(url, isSRGB) {
+  if (!url) return null;
+  if (texCache[url]) return texCache[url];
+  const t = texLoader.load(url);
+  if (isSRGB) t.colorSpace = THREE.SRGBColorSpace;
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.repeat.set(3, 3);
+  texCache[url] = t;
+  return t;
+}
+
+function buildMaterial(defId) {
+  const def = MAT_DEFS.find(function(d){ return d.id === defId; });
+  const st  = matState[defId];
+  // swatchIdx=-1 significa nenhum acabamento selecionado — retorna material neutro
+  const sw  = st.swatchIdx >= 0 ? def.swatches[st.swatchIdx] : null;
+  if (!sw) {
+    return new THREE.MeshStandardMaterial({
+      roughness: def.roughness, metalness: def.metalness,
+      color: new THREE.Color(0.75, 0.72, 0.68)
+    });
+  }
+
+  const mat = new THREE.MeshStandardMaterial({
+    roughness: (st.roughness !== undefined) ? st.roughness : def.roughness,
+    metalness: (st.metalness !== undefined) ? st.metalness : def.metalness
+  });
+
+  const colorSrc = st.colorUrl || sw.color;
+  if (colorSrc) {
+    const t = loadTex(colorSrc, true);
+    // texIntensity: blend between white (1,1,1) and the texture color
+    // We achieve this by setting color to lerp and keeping the map
+    mat.map = t;
+    // Apply intensity: mix toward neutral gray as intensity decreases
+    const i = st.texIntensity !== undefined ? st.texIntensity : 1.0;
+    mat.color = new THREE.Color(i, i, i);
+  } else if (sw.solidColor) {
+    const i = st.texIntensity !== undefined ? st.texIntensity : 1.0;
+    const base = new THREE.Color(sw.solidColor);
+    mat.color = new THREE.Color(
+      0.5 + (base.r - 0.5) * i,
+      0.5 + (base.g - 0.5) * i,
+      0.5 + (base.b - 0.5) * i
+    );
+  }
+
+  const normalSrc = st.normalUrl || sw.normal;
+  if (normalSrc) {
+    mat.normalMap = loadTex(normalSrc, false);
+    const ni = st.normalIntensity !== undefined ? st.normalIntensity : 1.0;
+    mat.normalScale = new THREE.Vector2(ni, ni);
+  }
+
+  return mat;
+}
+
+function matForName(glbName) {
+  const n = glbName.toLowerCase();
+  // Try exact match first
+  for (let i = 0; i < MAT_DEFS.length; i++) {
+    if (MAT_DEFS[i].nameMatch(n)) return buildMaterial(MAT_DEFS[i].id);
+  }
+  // Fallback: couro for anything unrecognised (e.g. empty name)
+  return buildMaterial('couro');
+}
+
+function assignMaterials(group) {
+  group.traverse(function(o) {
+    if (!o.isMesh) return;
+    if (!o.userData.origMatNames) {
+      if (Array.isArray(o.material)) {
+        o.userData.origMatNames = o.material.map(function(m){ return m ? (m.name || '') : ''; });
+        o.userData.singleMat = false;
+      } else {
+        o.userData.origMatNames = [o.material ? (o.material.name || '') : ''];
+        o.userData.singleMat = true;
+      }
+    }
+    if (o.userData.singleMat) {
+      o.material = matForName(o.userData.origMatNames[0]);
+    } else {
+      o.material = o.userData.origMatNames.map(function(n){ return matForName(n); });
+    }
+    o.castShadow    = true;
+    o.receiveShadow = true;
+  });
+}
+
+function reapplyAll() {
+  placed.forEach(function(p){ assignMaterials(p.obj); });
+}
+
+// ── GLTF LOADER ────────────────────────────────────────────────────────────
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
+const gltfLoader    = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+function loadGLTF(def) {
+  return new Promise(function(res, rej) {
+    if (gltfCache[def.key]) { res(gltfCache[def.key]); return; }
+
+    function onProgress(xhr) {
+      if (xhr.total) document.getElementById('progressFill').style.width = (xhr.loaded/xhr.total*100) + '%';
+    }
+
+    if (IS_HTTP) {
+      gltfLoader.load(def.file,
+        function(gltf){ gltfCache[def.key] = gltf.scene; res(gltf.scene); },
+        onProgress, rej
+      );
+      return;
+    }
+
+    // file:// mode
+    if (!dirHandle) { rej(new Error('Pasta nao selecionada')); return; }
+    dirHandle.getFileHandle(def.file).then(function(fh) {
+      return fh.getFile();
+    }).then(function(file) {
+      const url = URL.createObjectURL(file);
+      gltfLoader.load(url,
+        function(gltf){ URL.revokeObjectURL(url); gltfCache[def.key] = gltf.scene; res(gltf.scene); },
+        onProgress,
+        function(err){ URL.revokeObjectURL(url); rej(err); }
+      );
+    }).catch(rej);
+  });
+}
+
+function deepClone(src) {
+  const clone = src.clone(true);
+  clone.traverse(function(o) {
+    if (!o.isMesh || o.userData.origMatNames) return;
+    if (Array.isArray(o.material)) {
+      o.userData.origMatNames = o.material.map(function(m){ return m ? (m.name||'') : ''; });
+      o.userData.singleMat = false;
+    } else {
+      o.userData.origMatNames = [o.material ? (o.material.name||'') : ''];
+      o.userData.singleMat = true;
+    }
+  });
+  return clone;
+}
+
+// ── ADD MODULE ─────────────────────────────────────────────────────────────
+async function addModule(key) {
+  if (isLoading) { showNotif('Aguarde...'); return; }
+  if (!IS_HTTP && !dirHandle) {
+    if (IN_IFRAME) {
+      window.parent.postMessage({type:'SALVA_NEED_FOLDER'}, '*');
+      showNotif('Clique em "Carregar modelos" no menu');
+      return;
+    }
+    await selectFolder();
+    if (!dirHandle) return;
+  }
+  const def = MODULE_DEFS.find(function(d){ return d.key === key; });
+  if (!def) { showNotif('Modulo nao encontrado: ' + key); return; }
+
+  isLoading = true;
+  setSpinner(true, 'Carregando ' + def.label + '...');
+  try {
+    const src = await loadGLTF(def);
+    const obj = deepClone(src);
+
+    // All GLBs are Y-up. Force clean rotation — only apply catalog rotY.
+    const baseRotY = def.rotY || 0;
+    obj.rotation.set(0, baseRotY, 0);
+
+    // Measure bbox with obj at origin (position 0,0,0) after rotation.
+    scene.add(obj);
+    const bbox = new THREE.Box3().setFromObject(obj);
+    scene.remove(obj);
+
+    const sizeX   = bbox.max.x - bbox.min.x;
+    const flipped = document.getElementById('chkFlip').checked;
+    if (flipped) obj.scale.x = -1;
+
+    assignMaterials(obj);
+    scene.add(obj);
+
+    const id = 'mod_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+    placed.push({id:id, key:key, def:def, obj:obj, bbox:bbox, sizeX:sizeX,
+                 flipped:flipped, baseRotY:baseRotY});
+
+    recalcPos();
+    updateBar();
+    fitCamera();
+    document.getElementById('progressFill').style.width = '0%';
+    showNotif('Adicionado: ' + def.label);
+  } catch(e) {
+    console.error(e);
+    showNotif('Erro: ' + e.message);
+  } finally {
+    isLoading = false;
+    setSpinner(false);
+  }
+}
+
+// ── RECALC POSITIONS ───────────────────────────────────────────────────────
+function recalcPos() {
+  if (!placed.length) return;
+  let cx = 0;
+  const anchor0  = placed[0].bbox;
+  // Âncora Z: parede traseira do primeiro módulo — todos os módulos com o fundo alinhado
+  const anchorBackZ = anchor0.min.z;
+  // Âncora Y: chão do primeiro módulo — todos os pés no mesmo nível
+  const anchorFloorY = anchor0.min.y;
+  placed.forEach(function(p) {
+    const bx = p.bbox;
+    // X: encosta lado a lado
+    if (p.flipped) {
+      p.obj.position.x = cx + bx.max.x;
+    } else {
+      p.obj.position.x = cx - bx.min.x;
+    }
+    // Y: alinha pelo CHÃO
+    p.obj.position.y = anchorFloorY - bx.min.y;
+    // Z: alinha pelo FUNDO — parede traseira igual para todos os módulos
+    p.obj.position.z = anchorBackZ - bx.min.z;
+    cx += p.sizeX;
+  });
+}
+
+function removeModule(id) {
+  const i = placed.findIndex(function(p){ return p.id === id; });
+  if (i < 0) return;
+  scene.remove(placed[i].obj);
+  placed.splice(i, 1);
+  recalcPos(); updateBar();
+  if (placed.length) fitCamera();
+}
+
+function flipModule(id) {
+  const m = placed.find(function(p){ return p.id === id; });
+  if (!m) return;
+  m.flipped = !m.flipped;
+  m.obj.scale.x = m.flipped ? -1 : 1;
+  recalcPos();
+}
+
+// ── CAMERA ─────────────────────────────────────────────────────────────────
+function fitCamera() {
+  if (!placed.length) return;
+  const box = new THREE.Box3();
+  placed.forEach(function(p){ box.expandByObject(p.obj); });
+  const center = box.getCenter(new THREE.Vector3());
+  const size   = box.getSize(new THREE.Vector3());
+  const dist   = Math.max(size.x, size.y, size.z) * 1.8;
+  controls.target.copy(center);
+  camera.position.set(center.x, center.y + dist * 0.45, center.z + dist);
+  controls.update();
+}
+
+function topView() {
+  if (!placed.length) return;
+  const box = new THREE.Box3();
+  placed.forEach(function(p){ box.expandByObject(p.obj); });
+  const c = box.getCenter(new THREE.Vector3());
+  const s = box.getSize(new THREE.Vector3());
+  controls.target.copy(c);
+  camera.position.set(c.x, c.y + Math.max(s.x, s.z) * 1.6, c.z + 0.01);
+  controls.update();
+}
+
+
+// ── FRONT SCREENSHOT PARA PDF ───────────────────────────────────────────────
+function getFrontScreenshot() {
+  if (!placed.length) return renderer.domElement.toDataURL('image/jpeg', 0.92);
+
+  // Salva estado atual da câmera
+  const savedPos    = camera.position.clone();
+  const savedTarget = controls.target.clone();
+
+  // Calcula bounding box de tudo que foi colocado
+  const box = new THREE.Box3();
+  placed.forEach(function(p){ box.expandByObject(p.obj); });
+  const center = box.getCenter(new THREE.Vector3());
+  const size   = box.getSize(new THREE.Vector3());
+
+  // Distância frontal que enquadra toda a largura + altura com padding
+  const aspect = renderer.domElement.width / renderer.domElement.height;
+  const fovRad = camera.fov * Math.PI / 180;
+  const distH  = size.y / (2 * Math.tan(fovRad / 2));
+  const distW  = (size.x / aspect) / (2 * Math.tan(fovRad / 2));
+  const dist   = Math.max(distH, distW) * 1.25;
+
+  // Posiciona câmera direto na frente, levemente acima do centro
+  controls.target.set(center.x, center.y, center.z);
+  camera.position.set(center.x, center.y + size.y * 0.08, center.z + dist);
+  controls.update();
+  renderer.render(scene, camera);
+
+  const shot = renderer.domElement.toDataURL('image/jpeg', 0.92);
+
+  // Restaura câmera
+  camera.position.copy(savedPos);
+  controls.target.copy(savedTarget);
+  controls.update();
+  renderer.render(scene, camera);
+
+  return shot;
+}
+// ── BOTTOM BAR ─────────────────────────────────────────────────────────────
+function getActivePriceKey() {
+  // Retorna o priceKey do swatch selecionado.
+  // Prioridade: card aberto → qualquer tecido/couro com swatchIdx >= 0
+  // Se nenhum acabamento selecionado → null.
+
+  // 1. Card aberto tem prioridade
+  const openCard = document.querySelector('.mat-card.open');
+  if (openCard) {
+    const mid = openCard.id.replace('mc_', '');
+    const def = MAT_DEFS.find(function(d){ return d.id === mid; });
+    if (def) {
+      const idx = matState[mid].swatchIdx;
+      if (idx >= 0) {
+        const sw = def.swatches[idx];
+        if (sw && sw.priceKey) return sw.priceKey;
+      }
+      return null; // card aberto mas sem seleção → sem preço
+    }
+  }
+
+  // 2. Sem card aberto: procura tecido primeiro, depois couro
+  const order = ['tecido','couro'];
+  for (var i = 0; i < order.length; i++) {
+    var mid = order[i];
+    var def = MAT_DEFS.find(function(d){ return d.id === mid; });
+    if (!def) continue;
+    var idx = matState[mid].swatchIdx;
+    if (idx >= 0) {
+      var sw = def.swatches[idx];
+      if (sw && sw.priceKey) return sw.priceKey;
+    }
+  }
+  return null;
+}
+
+function getUnitPrice(modKey, priceKey) {
+  if (!priceKey) return null;
+  const prices = HIATO_PRICE_FULL[modKey] || {};
+  const v = prices[priceKey];
+  return (v === null || v === undefined) ? null : v;
+}
+
+function updateBar() {
+  const el = document.getElementById('compItems');
+  const tb = document.getElementById('totalBadge');
+  if (!placed.length) {
+    el.innerHTML = '<div class="empty-comp">Nenhum m&#xF3;dulo adicionado</div>';
+    tb.textContent = '0 m\xF3dulos';
+    updatePriceDisplay();
+    return;
+  }
+
+  const activePriceKey = getActivePriceKey();
+
+  // Renderiza blocos com cota visual
+  el.innerHTML = '';
+  placed.forEach(function(p) {
+    const unitPrice = getUnitPrice(p.def.key, activePriceKey);
+    const priceFmt = unitPrice !== null
+      ? 'R$ ' + unitPrice.toLocaleString('pt-BR')
+      : '';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cota-wrap';
+    var blkW = Math.max(88, parseFloat(p.def.dimsL || 1) * 66);
+    wrap.style.width = blkW + 'px';
+
+    wrap.innerHTML =
+      '<div class="cota-block" style="min-height:110px">' +
+        '<div class="cota-content">' +
+          '<div class="cota-icon">' + p.def.icon + '</div>' +
+          '<div class="cota-name">' + p.def.label + (p.flipped ? ' ⇄' : '') + '</div>' +
+          '<div class="cota-dim-prof">Prof: ' + (p.def.dimsP||'-') + 'm · Alt: ' + (p.def.dimsA||'-') + 'm</div>' +
+          (priceFmt ? '<div class="cota-price-tag">' + priceFmt + '</div>' : '') +
+        '</div>' +
+        '<div class="cota-ruler">' +
+          '<div class="cota-line"></div>' +
+          '<div class="cota-arrow-l"></div>' +
+          '<div class="cota-arrow-r"></div>' +
+          '<div class="cota-ruler-label">← ' + (p.def.dimsL||'-') + 'm →</div>' +
+        '</div>' +
+        '<button style="position:absolute;top:3px;right:3px;background:none;border:none;cursor:pointer;color:#bbb;font-size:11px;line-height:1;padding:0;z-index:2" title="Remover" data-id="' + p.id + '" class="cota-rm">✕</button>' +
+        '<button style="position:absolute;top:3px;left:3px;background:none;border:none;cursor:pointer;color:var(--text2);font-size:10px;line-height:1;padding:0;z-index:2" title="Espelhar" data-id="' + p.id + '" class="cota-flip">⇄</button>' +
+      '</div>';
+
+    wrap.querySelector('.cota-rm').addEventListener('click', function(){ removeModule(p.id); });
+    wrap.querySelector('.cota-flip').addEventListener('click', function(){ flipModule(p.id); });
+    el.appendChild(wrap);
+  });
+
+  const totalLarg = placed.reduce(function(s,p){ return s + parseFloat(p.def.dimsL || 0); }, 0);
+  tb.innerHTML =
+    '<span>&#8596; Largura total: <strong>' + totalLarg.toFixed(2).replace('.',',') + 'm</strong></span>';
+  updatePriceDisplay();
+}
+
+// ── MATERIAL CARDS ─────────────────────────────────────────────────────────
+function buildMatCards() {
+  const container = document.getElementById('matContainer');
+  container.innerHTML = '';
+  MAT_DEFS.forEach(function(def) {
+    const st  = matState[def.id];
+    const sw  = def.swatches[st.swatchIdx];
+    const card = document.createElement('div');
+    card.className = 'mat-card';
+    card.id = 'mc_' + def.id;
+
+    const previewStyle = (!sw || sw === undefined)
+      ? 'background:#ccc'
+      : sw.color
+        ? 'background-image:url("' + sw.color + '")'
+        : ('background:' + (sw.solidColor || '#888'));
+
+    let swatchHtml = '';
+    def.swatches.forEach(function(s, i) {
+      const bg = s.color
+        ? 'background-image:url("' + s.color + '")'
+        : ('background:' + (s.solidColor || '#888'));
+      swatchHtml +=
+        '<div class="swatch-wrap" data-mat="' + def.id + '" data-idx="' + i + '">' +
+          '<div class="swatch' + (st.swatchIdx >= 0 && i === st.swatchIdx ? ' active' : '') + '" style="' + bg + '"></div>' +
+          '<div class="swatch-name">' + s.label + '</div>' +
+        '</div>';
+    });
+
+    const texPct      = Math.round((st.texIntensity    !== undefined ? st.texIntensity    : 1.0) * 100);
+    const normalPct   = Math.round((st.normalIntensity !== undefined ? st.normalIntensity : 1.0) * 100);
+    const roughPct    = Math.round((st.roughness       !== undefined ? st.roughness       : def.roughness) * 100);
+    const metalPct    = Math.round((st.metalness       !== undefined ? st.metalness       : def.metalness) * 100);
+
+    card.innerHTML =
+      '<div class="mat-header" data-mat="' + def.id + '">' +
+        '<div class="mat-icon">' + def.icon + '</div>' +
+        '<div class="mat-name">' + def.label + '</div>' +
+        '<div class="mat-preview" style="' + previewStyle + '"></div>' +
+        '<div class="mat-chevron">&#x25BC;</div>' +
+      '</div>' +
+      '<div class="mat-body">' +
+        '<div class="swatch-grid">' + swatchHtml + '</div>' +
+        '<div class="upload-row">' +
+          '<div class="upload-lbl">Cor/Textura</div>' +
+          '<button class="upload-btn' + (st.colorUrl ? ' loaded' : '') + '" data-mat="' + def.id + '" data-type="color">' +
+            (st.colorUrl ? '&#x2713; Personalizada' : '+ Upload imagem') + '</button>' +
+          '<button class="upload-rm" data-mat="' + def.id + '" data-type="color">&#x2715;</button>' +
+        '</div>' +
+        '<div class="slider-row">' +
+          '<div class="slider-lbl">Intensidade</div>' +
+          '<input type="range" min="0" max="100" value="' + texPct + '" class="intensity-slider" data-mat="' + def.id + '" data-type="tex">' +
+          '<div class="slider-val" id="texVal_' + def.id + '">' + texPct + '%</div>' +
+        '</div>' +
+        '<div class="upload-row">' +
+          '<div class="upload-lbl">Normal Map</div>' +
+          '<button class="upload-btn' + (st.normalUrl ? ' loaded' : '') + '" data-mat="' + def.id + '" data-type="normal">' +
+            (st.normalUrl ? '&#x2713; Personalizado' : '+ Upload imagem') + '</button>' +
+          '<button class="upload-rm" data-mat="' + def.id + '" data-type="normal">&#x2715;</button>' +
+        '</div>' +
+        '<div class="slider-row">' +
+          '<div class="slider-lbl">Intensidade</div>' +
+          '<input type="range" min="0" max="200" value="' + Math.round(normalPct * 2) + '" class="intensity-slider" data-mat="' + def.id + '" data-type="normal">' +
+          '<div class="slider-val" id="normalVal_' + def.id + '">' + normalPct + '%</div>' +
+        '</div>' +
+        '<div class="slider-row">' +
+          '<div class="slider-lbl">Roughness</div>' +
+          '<input type="range" min="0" max="100" value="' + roughPct + '" class="mat-prop-slider" data-mat="' + def.id + '" data-type="roughness">' +
+          '<div class="slider-val" id="roughVal_' + def.id + '">' + roughPct + '%</div>' +
+        '</div>' +
+        '<div class="slider-row">' +
+          '<div class="slider-lbl">Metalness</div>' +
+          '<input type="range" min="0" max="100" value="' + metalPct + '" class="mat-prop-slider" data-mat="' + def.id + '" data-type="metalness">' +
+          '<div class="slider-val" id="metalVal_' + def.id + '">' + metalPct + '%</div>' +
+        '</div>' +
+      '</div>';
+
+    // Events
+    card.querySelector('.mat-header').addEventListener('click', function() {
+      card.classList.toggle('open');
+      updateBar(); // atualiza preços unitários nos blocos
+    });
+    card.querySelectorAll('.swatch-wrap').forEach(function(sw) {
+      sw.addEventListener('click', function() {
+        const mid = sw.dataset.mat;
+        const idx = parseInt(sw.dataset.idx);
+        matState[mid].swatchIdx = idx;
+        matState[mid].colorUrl  = null;
+        matState[mid].normalUrl = null;
+        buildMatCards();
+        reapplyAll();
+        updatePriceDisplay();
+      });
+    });
+    card.querySelectorAll('.upload-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const mid  = btn.dataset.mat;
+        const type = btn.dataset.type;
+        const inp  = document.createElement('input');
+        inp.type   = 'file'; inp.accept = 'image/*';
+        inp.addEventListener('change', function(e) {
+          const file = e.target.files[0]; if (!file) return;
+          const url  = URL.createObjectURL(file);
+          if (type === 'color')  matState[mid].colorUrl  = url;
+          if (type === 'normal') matState[mid].normalUrl = url;
+          buildMatCards(); reapplyAll();
+        });
+        inp.click();
+      });
+    });
+    card.querySelectorAll('.upload-rm').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const mid  = btn.dataset.mat;
+        const type = btn.dataset.type;
+        if (type === 'color')  matState[mid].colorUrl  = null;
+        if (type === 'normal') matState[mid].normalUrl = null;
+        buildMatCards(); reapplyAll();
+      });
+    });
+
+    // Intensity sliders
+    card.querySelectorAll('.intensity-slider').forEach(function(slider) {
+      slider.addEventListener('input', function() {
+        const mid  = slider.dataset.mat;
+        const type = slider.dataset.type;
+        const v    = parseInt(slider.value);
+        if (type === 'tex') {
+          matState[mid].texIntensity = v / 100;
+          const el = document.getElementById('texVal_' + mid);
+          if (el) el.textContent = v + '%';
+        } else if (type === 'normal') {
+          matState[mid].normalIntensity = v / 100;
+          const el = document.getElementById('normalVal_' + mid);
+          if (el) el.textContent = Math.round(v / 2) + '%';
+        }
+        reapplyAll();
+      });
+    });
+
+    // Roughness / Metalness sliders
+    card.querySelectorAll('.mat-prop-slider').forEach(function(slider) {
+      slider.addEventListener('input', function() {
+        const mid  = slider.dataset.mat;
+        const type = slider.dataset.type;
+        const v    = parseInt(slider.value);
+        if (type === 'roughness') {
+          matState[mid].roughness = v / 100;
+          const el = document.getElementById('roughVal_' + mid);
+          if (el) el.textContent = v + '%';
+        } else if (type === 'metalness') {
+          matState[mid].metalness = v / 100;
+          const el = document.getElementById('metalVal_' + mid);
+          if (el) el.textContent = v + '%';
+        }
+        reapplyAll();
+      });
+    });
+
+    container.appendChild(card);
+  });
+}
+
+// ── BRAND / PRODUCT ────────────────────────────────────────────────────────
+function onBrandChange() {
+  curBrand = document.getElementById('selBrand').value;
+  const brand = CATALOG[curBrand];
+  const prods = Object.keys(brand.products);
+  curProd = prods[0];
+  const sel = document.getElementById('selProd');
+  sel.innerHTML = prods.map(function(k){
+    return '<option value="' + k + '">' + brand.products[k].label + '</option>';
+  }).join('');
+  updateBrandUI(); resetScene();
+}
+
+function onProdChange() {
+  curProd = document.getElementById('selProd').value;
+  updateBrandUI(); resetScene();
+}
+
+function updateBrandUI() {
+  const brand = CATALOG[curBrand];
+  const prod  = brand.products[curProd];
+  MODULE_DEFS = prod.modules;
+  document.getElementById('logoMark').textContent  = brand.initial;
+  document.getElementById('logoText').textContent  = brand.label;
+  document.getElementById('modelName').textContent = 'Cole\xE7\xE3o ' + prod.label;
+  buildModuleGrid();
+}
+
+function resetScene() {
+  placed.forEach(function(p){ scene.remove(p.obj); });
+  placed = [];
+  gltfCache = {};
+  updateBar();
+}
+
+// ── MODULE GRID ────────────────────────────────────────────────────────────
+function buildModuleGrid() {
+  const g = document.getElementById('moduleGrid');
+  g.innerHTML = '';
+  MODULE_DEFS.forEach(function(def) {
+    const card = document.createElement('div');
+    card.className = 'module-card';
+    card.innerHTML =
+      '<div class="module-icon">' + def.icon + '</div>' +
+      '<div class="module-label">' + def.label + '</div>' +
+      '<div class="module-dims">'  + def.dims  + '</div>';
+    card.addEventListener('click', function(){ addModule(def.key); });
+    g.appendChild(card);
+  });
+}
+
+// ── TABS ───────────────────────────────────────────────────────────────────
+function setupTabs() {
+  document.querySelectorAll('.tab-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-content').forEach(function(c){ c.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function setSpinner(v, msg) {
+  document.getElementById('spinnerOverlay').style.display = v ? 'flex' : 'none';
+  if (msg) document.getElementById('spinnerText').textContent = msg;
+}
+
+function showNotif(msg) {
+  const n = document.createElement('div');
+  n.className = 'notif'; n.textContent = msg;
+  document.body.appendChild(n);
+  setTimeout(function(){ n.remove(); }, 3000);
+}
+
+// ── LAUNCH ─────────────────────────────────────────────────────────────────
+function launchApp() {
+  document.getElementById('loadOverlay').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex';
+  setupTabs();
+  buildModuleGrid();
+  buildMatCards();
+  updateBar();
+  onResize();
+}
+
+async function selectFolder() {
+  if (!window.showDirectoryPicker) {
+    showNotif('Use Chrome ou Edge para abrir via arquivo local');
+    return;
+  }
+  try {
+    dirHandle = await window.showDirectoryPicker();
+    let found = 0;
+    for await (const e of dirHandle.values()) {
+      if (e.name.endsWith('.glb')) found++;
+    }
+    if (!found) { showNotif('Nenhum .glb encontrado nesta pasta'); dirHandle = null; return; }
+    launchApp();
+  } catch(e) {
+    if (e.name !== 'AbortError') showNotif('Erro: ' + e.message);
+  }
+}
+
+// ── PDF ────────────────────────────────────────────────────────────────────
+async function generatePDF() {
+  if (!placed.length) { showNotif('Adicione modulos primeiro'); return; }
+  const screenshot = getFrontScreenshot();
+  const brand = CATALOG[curBrand];
+  const prod  = brand.products[curProd];
+  const date  = new Date().toLocaleDateString('pt-BR');
+  const totalM = placed.reduce(function(s,p){ return s+p.sizeX; }, 0).toFixed(2).replace('.',',');
+  const totalLarg = placed.reduce(function(s,p){ return s + parseFloat(p.def.dimsL || 0); }, 0).toFixed(2).replace('.',',');
+  const totalP = placed.length ? (placed[0].def.dimsP || '-') + 'm' : '-';
+
+  // ── Calcular tabela de preços — mostra apenas os tipos com valor cadastrado
+  const todostipos = (_catalogData.tipos_preco || []).map(function(t){ return t.nome; });
+  // Filtra apenas os tipos que têm pelo menos um módulo com preço não-nulo
+  const tiposRevestimento = todostipos.filter(function(tipo) {
+    return placed.some(function(p) {
+      const prices = HIATO_PRICE_FULL[p.def.key] || {};
+      return prices[tipo] !== null && prices[tipo] !== undefined;
+    });
+  });
+  let priceTableHtml = '<div class="sec">Valores estimados por tipo de revestimento</div>' +
+    '<table><thead><tr><th>Tipo de revestimento</th><th style="text-align:right">Valor estimado</th><th style="text-align:right">Obs.</th></tr></thead><tbody>';
+  tiposRevestimento.forEach(function(tipo) {
+    const r = calcTotalPrice(placed, tipo);
+    const fmtVal = r.total > 0 ? 'R$ ' + r.total.toLocaleString('pt-BR') : '—';
+    const obs = r.hasNull ? 'Parte sob consulta' : (r.total > 0 ? 'Valor aproximado' : 'Sem preço cadastrado');
+    priceTableHtml += '<tr><td>' + tipo + '</td><td style="text-align:right;font-weight:700">' + fmtVal + '</td><td style="text-align:right;font-size:8pt;color:#888">' + obs + '</td></tr>';
+  });
+  if (!tiposRevestimento.length) {
+    priceTableHtml += '<tr><td colspan="3" style="color:#aaa">Preços sob consulta</td></tr>';
+  }
+  priceTableHtml += '</tbody><tfoot><tr><td colspan="3" style="font-size:7.5pt;color:#aaa">* Valores aproximados conforme tabela Salva 04-2026. Sujeito a alteração.</td></tr></tfoot></table>';
+
+  // ── Módulos rows
+  const rows = placed.map(function(p,i){
+    const L = (p.def.dimsL || '-') + 'm';
+    const P = (p.def.dimsP || '-') + 'm';
+    const A = (p.def.dimsA || '-') + 'm';
+    return '<tr><td>'+(i+1)+'</td><td>'+p.def.label+'</td><td>'+L+'</td><td>'+P+'</td><td>'+A+'</td><td>'+(p.flipped?'Sim':'N\xE3o')+'</td></tr>';
+  }).join('');
+
+  // ── Determine which material slots are actually used by placed modules
+  const usedMatIds = {};
+  placed.forEach(function(p) {
+    p.obj.traverse(function(node) {
+      if (!node.isMesh) return;
+      const mats = Array.isArray(node.material) ? node.material : [node.material];
+      mats.forEach(function(m) {
+        const origName = (node.userData && node.userData.origMatNames)
+          ? node.userData.origMatNames[mats.indexOf(m)] || ''
+          : (m.userData && m.userData.origName) || m.name || '';
+        const n = origName.toLowerCase();
+        MAT_DEFS.forEach(function(d) { if (d.nameMatch(n)) usedMatIds[d.id] = true; });
+      });
+    });
+  });
+  // Fallback: if traversal found nothing, show all defs
+  const activeDefs = MAT_DEFS.filter(function(d){ return usedMatIds[d.id]; });
+  const defsToShow = activeDefs.length ? activeDefs : MAT_DEFS;
+
+  // ── Build material preview rows
+  function getPreviewDataUrl(def, st) {
+    // Returns a small 48x48 canvas data URL showing the current color/texture
+    const sw = def.swatches[st.swatchIdx] || def.swatches[0];
+    // Use solid color if no texture
+    const solidColor = sw.solidColor || null;
+    const colorSrc   = st.colorUrl || sw.color || null;
+
+    const SIZE = 48;
+    const cnv  = document.createElement('canvas');
+    cnv.width  = SIZE; cnv.height = SIZE;
+    const ctx  = cnv.getContext('2d');
+
+    if (solidColor) {
+      ctx.fillStyle = solidColor;
+      ctx.fillRect(0, 0, SIZE, SIZE);
+      return cnv.toDataURL();
+    }
+    if (colorSrc && colorSrc.startsWith('data:')) {
+      // Draw synchronously from data URL
+      const img = new Image();
+      img.src = colorSrc;
+      ctx.drawImage(img, 0, 0, SIZE, SIZE);
+      return cnv.toDataURL();
+    }
+    // Fallback neutral
+    ctx.fillStyle = '#c8bfb4';
+    ctx.fillRect(0, 0, SIZE, SIZE);
+    return cnv.toDataURL();
+  }
+
+  const matRows = defsToShow.map(function(def) {
+    const st  = matState[def.id];
+    const sw  = def.swatches[st.swatchIdx] || def.swatches[0];
+    const swLabel = st.colorUrl ? 'Personalizada' : sw.label;
+    const preview = getPreviewDataUrl(def, st);
+    const rough   = Math.round(st.roughness * 100);
+    const metal   = Math.round(st.metalness * 100);
+    return '<tr>' +
+      '<td style="width:52px"><img src="'+preview+'" style="width:44px;height:44px;border-radius:4px;border:1px solid #ddd;object-fit:cover;display:block"></td>' +
+      '<td><strong>'+def.icon+' '+def.label+'</strong></td>' +
+      '<td>'+swLabel+'</td>' +
+      '<td>'+rough+'%</td>' +
+      '<td>'+metal+'%</td>' +
+    '</tr>';
+  }).join('');
+
+  const html =
+    '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Config</title>' +
+    '<style>*{box-sizing:border-box;margin:0;padding:0}' +
+    'body{font-family:sans-serif;background:#e8e3dc;padding:20px}' +
+    '.doc{max-width:800px;margin:0 auto;background:#fff;border-radius:8px;padding:28px 32px}' +
+    '.hdr{background:#8b6f4e;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;border-radius:6px;margin-bottom:16px}' +
+    '.brand{font-size:20pt;font-weight:800;letter-spacing:3px}' +
+    '.render-wrap{width:100%;height:240px;background:#e8e3dc;border-radius:6px;border:1px solid #ddd4c8;margin-bottom:14px;display:flex;align-items:center;justify-content:center;overflow:hidden}' + '.render-img{width:50%;height:auto;max-height:220px;object-fit:contain;border-radius:4px}' +
+    '.sec{background:#8b6f4e;color:#fff;padding:4px 10px;font-size:8pt;font-weight:700;text-transform:uppercase;border-radius:4px 4px 0 0;margin-top:14px}' +
+    'table{width:100%;border-collapse:collapse;font-size:9.5pt}' +
+    'th{padding:5px 8px;background:#f5f0ea;border-bottom:1.5px solid #ddd;text-align:left;font-size:8pt;color:#5a4a38}' +
+    'td{padding:5px 8px;border-bottom:1px solid #ede6dd;vertical-align:middle}' +
+    'tr:nth-child(even) td{background:#faf7f3}' +
+    'tfoot td{background:#f0e9df;font-weight:700;color:#8b6f4e;border-top:2px solid #c4a882}' +
+    '.footer{margin-top:14px;padding-top:8px;border-top:1px solid #ddd;font-size:8pt;color:#aaa;display:flex;justify-content:space-between}' +
+    '@media print{body{background:#fff;padding:0}.doc{border-radius:0;box-shadow:none}}</style>' +
+    '</head><body><div class="doc">' +
+
+    // Header
+    '<div class="hdr"><div><div class="brand">'+brand.label.toUpperCase()+'</div>' +
+    '<div style="font-size:9pt;opacity:.85">'+prod.label+' &middot; Configura\xE7\xE3o personalizada</div></div>' +
+    '<div style="font-size:9pt;opacity:.8">'+date+'</div></div>' +
+
+    // 3D render screenshot
+    '<div style="width:100%;height:220px;background:#e8e3dc;border-radius:6px;border:1px solid #ddd4c8;margin-bottom:14px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="'+screenshot+'" style="width:50%;height:auto;max-height:200px;object-fit:contain;border-radius:4px;display:block"></div>' +
+
+    // Módulos table
+    '<div class="sec">M\xF3dulos selecionados</div>' +
+    '<table><thead><tr>' +
+      '<th>#</th><th>M\xF3dulo</th><th>Largura</th><th>Profundidade</th><th>Altura</th><th>Espelhado</th>' +
+    '</tr></thead>' +
+    '<tbody>'+rows+'</tbody>' +
+    '<tfoot><tr>' +
+      '<td colspan="2"><strong>Medidas totais</strong></td>' +
+      '<td><strong>Largura: '+totalLarg+'m</strong></td>' +
+      '<td colspan="2">Profundidade: '+totalP+'m</td>' +
+      '<td></td>' +
+    '</tr></tfoot>' +
+    '</table>' +
+
+    // Preços estimados
+    priceTableHtml +
+
+    // Materiais table
+    '<div class="sec">Materiais aplicados</div>' +
+    '<table><thead><tr>' +
+      '<th style="width:52px">Amostra</th><th>Material</th><th>Acabamento</th><th>Roughness</th><th>Metalness</th>' +
+    '</tr></thead>' +
+    '<tbody>'+matRows+'</tbody>' +
+    '</table>' +
+
+    '<div class="footer"><span>'+brand.label+' &middot; '+prod.label+'</span><span>'+date+'</span></div>' +
+    '</div></body></html>';
+
+  if (IN_IFRAME) { window.parent.postMessage({type:'SALVA_PDF_READY', html:html}, '*'); return; }
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(function(){ win.print(); }, 400);
+}
+
+// ── ROTATION PANEL ────────────────────────────────────────────────────────
+let rotTargetId = null;
+
+function openRotPanel(id) {
+  const m = placed.find(function(p){ return p.id === id; });
+  if (!m) return;
+  rotTargetId = id;
+
+  // Read current euler angles in degrees
+  const rx = Math.round(THREE.MathUtils.radToDeg(m.obj.rotation.x));
+  const ry = Math.round(THREE.MathUtils.radToDeg(m.obj.rotation.y));
+  const rz = Math.round(THREE.MathUtils.radToDeg(m.obj.rotation.z));
+
+  document.getElementById('rotX').value = rx;
+  document.getElementById('rotY').value = ry;
+  document.getElementById('rotZ').value = rz;
+  document.getElementById('rotXVal').textContent = rx + '°';
+  document.getElementById('rotYVal').textContent = ry + '°';
+  document.getElementById('rotZVal').textContent = rz + '°';
+  document.getElementById('rotPanelTitle').textContent = 'Ajustar: ' + m.def.label;
+  document.getElementById('rotPanel').style.display = 'block';
+
+  // Update the Reset button label to show the base rotation
+  const baseY = Math.round(THREE.MathUtils.radToDeg(m.baseRotY || 0));
+  const baseX = Math.round(THREE.MathUtils.radToDeg(m.baseRotX || 0));
+  const resetBtn = document.getElementById('btnRotReset');
+  const hint = (baseX !== 0 ? ' X'+baseX+'°' : '') + (baseY !== 0 ? ' Y'+baseY+'°' : '');
+  if (resetBtn) resetBtn.textContent = 'Reset' + (hint ? ' ('+hint.trim()+')' : '');
+}
+
+function closeRotPanel() {
+  document.getElementById('rotPanel').style.display = 'none';
+  rotTargetId = null;
+}
+
+function applyRotFromSliders() {
+  if (!rotTargetId) return;
+  const m = placed.find(function(p){ return p.id === rotTargetId; });
+  if (!m) return;
+  const rx = parseInt(document.getElementById('rotX').value);
+  const ry = parseInt(document.getElementById('rotY').value);
+  const rz = parseInt(document.getElementById('rotZ').value);
+
+  m.obj.position.set(0, 0, 0);
+  m.obj.rotation.set(
+    THREE.MathUtils.degToRad(rx),
+    THREE.MathUtils.degToRad(ry),
+    THREE.MathUtils.degToRad(rz)
+  );
+
+  // Recompute bbox with new rotation (object at origin)
+  scene.add(m.obj);
+  const newBbox = new THREE.Box3().setFromObject(m.obj);
+  scene.remove(m.obj);
+  scene.add(m.obj);
+  m.bbox  = newBbox;
+  m.sizeX = newBbox.max.x - newBbox.min.x;
+
+  recalcPos();
+  updateBar();
+}
+
+function applyRotPreset(rx, ry, rz) {
+  document.getElementById('rotX').value = rx;
+  document.getElementById('rotY').value = ry;
+  document.getElementById('rotZ').value = rz;
+  document.getElementById('rotXVal').textContent = rx + '°';
+  document.getElementById('rotYVal').textContent = ry + '°';
+  document.getElementById('rotZVal').textContent = rz + '°';
+  applyRotFromSliders();
+}
+
+function resetRotToBase() {
+  if (!rotTargetId) return;
+  const m = placed.find(function(p){ return p.id === rotTargetId; });
+  if (!m) return;
+  const by = Math.round(THREE.MathUtils.radToDeg(m.baseRotY || 0));
+  applyRotPreset(0, by, 0);
+}
+
+window.applyRotPreset  = applyRotPreset;
+window.resetRotToBase  = resetRotToBase;
+
+document.getElementById('rotX').addEventListener('input', function(){
+  document.getElementById('rotXVal').textContent = this.value + '°';
+  applyRotFromSliders();
+});
+document.getElementById('rotY').addEventListener('input', function(){
+  document.getElementById('rotYVal').textContent = this.value + '°';
+  applyRotFromSliders();
+});
+document.getElementById('rotZ').addEventListener('input', function(){
+  document.getElementById('rotZVal').textContent = this.value + '°';
+  applyRotFromSliders();
+});
+document.getElementById('rotClose').addEventListener('click', closeRotPanel);
+
+// ── EVENTS ─────────────────────────────────────────────────────────────────
+document.getElementById('btnSelectFolder').addEventListener('click', selectFolder);
+document.getElementById('btnTrocarPasta').addEventListener('click', async function(){
+  resetScene(); dirHandle = null; gltfCache = {}; await selectFolder();
+});
+document.getElementById('btnReset').addEventListener('click', function(){
+  resetScene(); buildModuleGrid(); buildMatCards();
+});
+document.getElementById('btnFit').addEventListener('click', fitCamera);
+document.getElementById('btnTop').addEventListener('click', topView);
+
+
+// ── PREÇO ESTIMADO ────────────────────────────────────────────────────────
+function updatePriceDisplay() {
+  const panel = document.getElementById('pricePanel');
+  if (!panel) return;
+  if (!placed.length) { panel.style.display = 'none'; return; }
+
+  // Usa EXATAMENTE o material atualmente selecionado — sem misturar couro + tecido
+  const activePriceKey = getActivePriceKey();
+  if (!activePriceKey) { panel.style.display = 'none'; return; }
+
+  let total = 0;
+  let hasNull = false;
+  placed.forEach(function(p) {
+    const prices = HIATO_PRICE_FULL[p.def.key] || {};
+    const v = prices[activePriceKey];
+    if (v === null || v === undefined) hasNull = true;
+    else total += v;
+  });
+
+  const fmtTotal = total.toLocaleString('pt-BR', {style:'currency', currency:'BRL'});
+  panel.style.display = 'flex';
+  panel.innerHTML =
+    '<span style="font-size:10px;font-weight:700;color:var(--text2);white-space:nowrap">Total <em style="font-style:normal;color:var(--accent)">' + activePriceKey + '</em>:</span>' +
+    '<span style="font-size:14px;font-weight:900;color:var(--accent);margin-left:6px">' + fmtTotal + (hasNull ? ' *' : '') + '</span>' +
+    (hasNull ? '<span style="font-size:9px;color:var(--text2);margin-left:4px">*parte sob consulta</span>' : '');
+}
+
+const HIATO_PRICE_FULL = _catalogData.precos || {};
+
+function calcTotalPrice(placedModules, tipoRevestimento) {
+  let total = 0;
+  let hasNull = false;
+  placedModules.forEach(function(p) {
+    const prices = HIATO_PRICE_FULL[p.def.key] || {};
+    const v = prices[tipoRevestimento];
+    if (v === null || v === undefined) { hasNull = true; }
+    else total += v;
+  });
+  return { total: total, hasNull: hasNull };
+}
+
+// ── EXPORT GLB ─────────────────────────────────────────────────────────────
+async function exportGLB() {
+  if (!placed.length) { showNotif('Adicione módulos primeiro'); return; }
+
+  showNotif('Exportando GLB…');
+
+  // Cria um grupo temporário com todos os módulos na posição atual
+  const exportGroup = new THREE.Group();
+  placed.forEach(function(p) {
+    // Clone profundo do objeto já posicionado e com materiais aplicados
+    const cloneObj = p.obj.clone(true);
+    cloneObj.position.copy(p.obj.position);
+    cloneObj.rotation.copy(p.obj.rotation);
+    cloneObj.scale.copy(p.obj.scale);
+    exportGroup.add(cloneObj);
+  });
+
+  // Garante que as texturas sejam incluídas no GLB
+  const exporter = new GLTFExporter();
+  exporter.parse(
+    exportGroup,
+    function(result) {
+      // result é ArrayBuffer (GLB binário)
+      const blob = new Blob([result], { type: 'model/gltf-binary' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      const prod = CATALOG[curBrand].products[curProd];
+      const now  = new Date();
+      const stamp = now.getFullYear() + '' +
+        String(now.getMonth()+1).padStart(2,'0') +
+        String(now.getDate()).padStart(2,'0') + '_' +
+        String(now.getHours()).padStart(2,'0') +
+        String(now.getMinutes()).padStart(2,'0');
+      a.href     = url;
+      a.download = (prod.label || curProd) + '_' + stamp + '.glb';
+      a.click();
+      URL.revokeObjectURL(url);
+      showNotif('GLB exportado!');
+    },
+    function(err) {
+      console.error('GLTFExporter error:', err);
+      showNotif('Erro ao exportar: ' + (err.message || err));
+    },
+    { binary: true, embedImages: true }
+  );
+}
+
+document.getElementById('btnExportGLB').addEventListener('click', exportGLB);
+document.getElementById('btnPDF').addEventListener('click', generatePDF);
+
+window.onBrandChange = onBrandChange;
+window.onProdChange  = onProdChange;
+
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'SALVA_GENERATE_PDF') generatePDF();
+  if (e.data && e.data.type === 'SALVA_SET_DIR' && e.data.dirHandle) {
+    dirHandle = e.data.dirHandle;
+    gltfCache = {};
+    showNotif('Pasta carregada');
+  }
+});
+
+// ── START ──────────────────────────────────────────────────────────────────
+if (IS_HTTP || IN_IFRAME) {
+  // Popular selBrand e selProd com dados do catalog
+  const _selBrand = document.getElementById('selBrand');
+  const _selProd  = document.getElementById('selProd');
+  if (_selBrand) {
+    _selBrand.innerHTML = Object.keys(CATALOG).map(k=>`<option value="${k}">${CATALOG[k].label}</option>`).join('');
+    _selBrand.value = curBrand;
+  }
+  if (_selProd) {
+    const _prods = CATALOG[curBrand]?.products || {};
+    _selProd.innerHTML = Object.keys(_prods).map(k=>`<option value="${k}">${_prods[k].label}</option>`).join('');
+    _selProd.value = curProd;
+  }
+  launchApp();
+  document.getElementById('btnTrocarPasta').style.display = '';
+} else {
+  // file:// standalone — wait for folder selection
+}
+
+if (IN_IFRAME) {
+  window.parent.postMessage({type:'SALVA_READY'}, '*');
+}
+
+</script>
+</body>
+</html>

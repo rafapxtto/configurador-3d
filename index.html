@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal — Configurador 3D</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#1a1a1a;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+h1{font-size:28px;font-weight:300;letter-spacing:4px;text-transform:uppercase;margin-bottom:8px}
+p{color:#666;font-size:13px;margin-bottom:48px;letter-spacing:1px}
+.cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.card{background:#222;border:1px solid #333;border-radius:16px;padding:28px 24px;width:200px;text-align:center;cursor:pointer;text-decoration:none;color:#fff;transition:all .2s}
+.card:hover{background:#2a2a2a;border-color:#666;transform:translateY(-4px)}
+.card .icon{font-size:40px;margin-bottom:12px}
+.card h2{font-size:14px;font-weight:600;margin-bottom:6px}
+.card p{font-size:12px;color:#888;margin:0}
+footer{margin-top:60px;font-size:11px;color:#444}
+</style>
+</head>
+<body>
+<h1>Configurador 3D</h1>
+<p>Salva · Minuano</p>
+<div class="cards">
+  <a href="cliente_interativo.html" class="card">
+    <div class="icon">🛋</div>
+    <h2>Atendimento</h2>
+    <p>Fluxo guiado por marca e produto</p>
+  </a>
+  <a href="configurador_hiato.html" class="card">
+    <div class="icon">🎛</div>
+    <h2>Configurador</h2>
+    <p>Acesso direto ao editor 3D</p>
+  </a>
+  <a href="/export/list" class="card">
+    <div class="icon">📦</div>
+    <h2>Exportações</h2>
+    <p>Arquivos GLB salvos</p>
+  </a>
+  <a href="admin.html" class="card">
+    <div class="icon">⚙️</div>
+    <h2>Admin</h2>
+    <p>Catálogo, materiais e preços</p>
+  </a>
+</div>
+<footer>Rodando em http://localhost:8080</footer>
+</body>
+</html>

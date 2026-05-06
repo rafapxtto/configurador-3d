@@ -1,0 +1,484 @@
+{
+  "version": 1,
+  "marcas": [
+    {
+      "id": "salva",
+      "nome": "Salva"
+    },
+    {
+      "id": "minuano",
+      "nome": "Minuano"
+    }
+  ],
+  "produtos": [
+    {
+      "id": "hiato",
+      "marca_id": "salva",
+      "nome": "Hiato",
+      "grupos_mat": [
+        "couro",
+        "tecido"
+      ]
+    },
+    {
+      "id": "pier",
+      "marca_id": "salva",
+      "nome": "Pier",
+      "grupos_mat": [
+        "couro",
+        "tecido"
+      ]
+    },
+    {
+      "id": "dapper",
+      "marca_id": "salva",
+      "nome": "Dapper",
+      "grupos_mat": [
+        "couro",
+        "tecido"
+      ]
+    },
+    {
+      "id": "eixo",
+      "marca_id": "salva",
+      "nome": "Eixo",
+      "grupos_mat": [
+        "couro",
+        "tecido"
+      ]
+    },
+    {
+      "id": "oliver",
+      "marca_id": "minuano",
+      "nome": "Oliver",
+      "grupos_mat": [
+        "couro",
+        "tecido"
+      ]
+    }
+  ],
+  "modulos": [
+    {
+      "id": "Hiato_1BR_2ASS",
+      "produto_id": "hiato",
+      "label": "1 Braço 2 Ass.",
+      "icon": "🛋️",
+      "dimsL": "1,96",
+      "dimsP": "1,12",
+      "dimsA": "0,78",
+      "file": "Hiato_1BR_2ASS.glb"
+    },
+    {
+      "id": "Hiato_1BR_1ASS",
+      "produto_id": "hiato",
+      "label": "1 Braço 1 Ass.",
+      "icon": "🛋️",
+      "dimsL": "1,45",
+      "dimsP": "1,12",
+      "dimsA": "0,78",
+      "file": "Hiato_1BR_1ASS.glb"
+    },
+    {
+      "id": "Hiato_SBR",
+      "produto_id": "hiato",
+      "label": "Sem Braço",
+      "icon": "⬛",
+      "dimsL": "1,12",
+      "dimsP": "1,13",
+      "dimsA": "0,77",
+      "file": "Hiato_SBR.glb"
+    },
+    {
+      "id": "Hiato_Chaise",
+      "produto_id": "hiato",
+      "label": "Chaise",
+      "icon": "🛏️",
+      "dimsL": "1,63",
+      "dimsP": "1,63",
+      "dimsA": "0,78",
+      "file": "Hiato_Chaise.glb"
+    },
+    {
+      "id": "Hiato_Mesa",
+      "produto_id": "hiato",
+      "label": "Mesa",
+      "icon": "⬜",
+      "dimsL": "3,15",
+      "dimsP": "1,12",
+      "dimsA": "0,78",
+      "file": "Hiato_Mesa.glb"
+    },
+    {
+      "id": "Pier_1BR_2ASS",
+      "produto_id": "pier",
+      "label": "1 Braço 2 Ass.",
+      "icon": "🛋️",
+      "dimsL": "2,105",
+      "dimsP": "0,95",
+      "dimsA": "0,61",
+      "file": "Pier_1BR_2ASS.glb"
+    },
+    {
+      "id": "Pier_1BR",
+      "produto_id": "pier",
+      "label": "1 Braço",
+      "icon": "🛋️",
+      "dimsL": "1,22",
+      "dimsP": "0,95",
+      "dimsA": "0,61",
+      "file": "Pier_1BR.glb"
+    },
+    {
+      "id": "Pier_SBR",
+      "produto_id": "pier",
+      "label": "Sem Braço",
+      "icon": "⬛",
+      "dimsL": "0,908",
+      "dimsP": "0,95",
+      "dimsA": "0,61",
+      "file": "Pier_SBR.glb"
+    },
+    {
+      "id": "Pier_Mesa",
+      "produto_id": "pier",
+      "label": "Mesa",
+      "icon": "⬜",
+      "dimsL": "1,27",
+      "dimsP": "0,95",
+      "dimsA": "0,61",
+      "file": "Pier_Mesa.glb"
+    },
+    {
+      "id": "Pier_Canto",
+      "produto_id": "pier",
+      "label": "Canto",
+      "icon": "↩️",
+      "dimsL": "1,119",
+      "dimsP": "1,116",
+      "dimsA": "0,31",
+      "file": "Pier_Canto.glb"
+    },
+    {
+      "id": "Pier_Pufe",
+      "produto_id": "pier",
+      "label": "Pufe",
+      "icon": "🟫",
+      "dimsL": "0,91",
+      "dimsP": "0,946",
+      "dimsA": "0,31",
+      "file": "Pier_Pufe.glb"
+    },
+    {
+      "id": "Dapper",
+      "produto_id": "dapper",
+      "label": "Dapper",
+      "icon": "🪑",
+      "dimsL": "0,72",
+      "dimsP": "0,59",
+      "dimsA": "0,77",
+      "file": "Dapper.glb"
+    },
+    {
+      "id": "Eixo",
+      "produto_id": "eixo",
+      "label": "Eixo",
+      "icon": "🪑",
+      "dimsL": "0,55",
+      "dimsP": "0,55",
+      "dimsA": "0,82",
+      "file": "Eixo.glb"
+    },
+    {
+      "id": "Oliver_1BR_2ASS",
+      "produto_id": "oliver",
+      "label": "1 Braço 2 Ass.",
+      "icon": "🛋️",
+      "dimsL": "2,10",
+      "dimsP": "0,90",
+      "dimsA": "0,75",
+      "file": "Oliver_1BR_2ASS.glb"
+    },
+    {
+      "id": "Oliver_SBR",
+      "produto_id": "oliver",
+      "label": "Sem Braço",
+      "icon": "⬛",
+      "dimsL": "0,90",
+      "dimsP": "0,90",
+      "dimsA": "0,75",
+      "file": "Oliver_SBR.glb"
+    },
+    {
+      "id": "Oliver_Canto",
+      "produto_id": "oliver",
+      "label": "Canto",
+      "icon": "↩️",
+      "dimsL": "1,10",
+      "dimsP": "1,10",
+      "dimsA": "0,75",
+      "file": "Oliver_Canto.glb"
+    },
+    {
+      "id": "Oliver_Pufe",
+      "produto_id": "oliver",
+      "label": "Pufe",
+      "icon": "🟫",
+      "dimsL": "0,75",
+      "dimsP": "0,75",
+      "dimsA": "0,40",
+      "file": "Oliver_Pufe.glb"
+    }
+  ],
+  "grupos_acabamento": [
+    {
+      "id": "couro",
+      "nome": "Couro",
+      "hex": "#7a4a2a",
+      "icon": "🟫"
+    },
+    {
+      "id": "tecido",
+      "nome": "Tecido",
+      "hex": "#3d7060",
+      "icon": "🟩"
+    },
+    {
+      "id": "metal",
+      "nome": "Metal",
+      "hex": "#4a5e70",
+      "icon": "⬜"
+    },
+    {
+      "id": "madeira",
+      "nome": "Madeira",
+      "hex": "#6a5028",
+      "icon": "🪵"
+    },
+    {
+      "id": "vidro",
+      "nome": "Vidro",
+      "hex": "#3a6a7a",
+      "icon": "🔷"
+    },
+    {
+      "id": "marmore",
+      "nome": "Mármore",
+      "hex": "#6a5a70",
+      "icon": "◻️"
+    }
+  ],
+  "acabamentos": [
+    {
+      "id": "c_liso",
+      "grupo_id": "couro",
+      "nome": "Liso",
+      "hex": "#b87040",
+      "tex_color": "Couro_Color.png",
+      "tex_normal": "Couro_Normal.png",
+      "price_keys": [
+        "Couro TP1"
+      ]
+    },
+    {
+      "id": "t_tipoA",
+      "grupo_id": "tecido",
+      "nome": "Tipo A",
+      "hex": "#7a9a88",
+      "tex_color": "Tecido_Color.png",
+      "tex_normal": "Tecido_Normal.png",
+      "price_keys": [
+        "TECIDO A"
+      ]
+    },
+    {
+      "id": "t_tipoB",
+      "grupo_id": "tecido",
+      "nome": "Tipo B",
+      "hex": "#4a6a58",
+      "tex_color": "Tecido_Color (1).png",
+      "tex_normal": "Tecido_Normal.png",
+      "price_keys": [
+        "TECIDO B"
+      ]
+    },
+    {
+      "id": "m_car",
+      "grupo_id": "madeira",
+      "nome": "Carvalho",
+      "hex": "#c09060",
+      "tex_color": "Madeira_Color.png",
+      "tex_normal": "",
+      "price_keys": [
+        "Couro TP1"
+      ]
+    },
+    {
+      "id": "m_nog",
+      "grupo_id": "madeira",
+      "nome": "Nogueira",
+      "hex": "#7a5028",
+      "tex_color": "Madeira_Color.png",
+      "tex_normal": "",
+      "price_keys": [
+        "Couro TP1"
+      ]
+    },
+    {
+      "id": "ac_mou3tqcnjh4p",
+      "grupo_id": "couro",
+      "nome": "La Paz",
+      "hex": "#6e5545",
+      "tex_color": "",
+      "tex_normal": "",
+      "price_keys": [
+        "COURO TP3",
+        "COURO T3"
+      ]
+    },
+    {
+      "id": "ac_mou40kdyh9no",
+      "grupo_id": "tecido",
+      "nome": "Tipo C",
+      "hex": "#b87040",
+      "price_keys": [
+        "TECIDO C"
+      ],
+      "tex_color": "",
+      "tex_normal": ""
+    },
+    {
+      "id": "ac_mou40woe23qj",
+      "grupo_id": "tecido",
+      "nome": "Matizes",
+      "hex": "#e5ab85",
+      "price_keys": [
+        "TECIDO D"
+      ],
+      "tex_color": "",
+      "tex_normal": ""
+    }
+  ],
+  "tipos_preco": [
+    {
+      "id": "tp_mou3rkwp2qsf",
+      "nome": "Couro TP1"
+    },
+    {
+      "id": "tp_mou3rkwpmxoe",
+      "nome": "COURO TP2"
+    },
+    {
+      "id": "tp_mou3rkwpmtg5",
+      "nome": "COURO TP3"
+    },
+    {
+      "id": "tp_mou3rkwp145p",
+      "nome": "COURO T1"
+    },
+    {
+      "id": "tp_mou3rkwpaykd",
+      "nome": "COURO T2"
+    },
+    {
+      "id": "tp_mou3rkwphuo0",
+      "nome": "COURO T3"
+    },
+    {
+      "id": "tp_mou3rkwp42h2",
+      "nome": "COURO T4"
+    },
+    {
+      "id": "tp_mou3rkwpkx8u",
+      "nome": "TECIDO A"
+    },
+    {
+      "id": "tp_mou3rkwp2cg9",
+      "nome": "TECIDO B"
+    },
+    {
+      "id": "tp_mou3rkwp7q7z",
+      "nome": "TECIDO C"
+    },
+    {
+      "id": "tp_mou3rkwpsvc9",
+      "nome": "TECIDO D"
+    }
+  ],
+  "precos": {
+    "Hiato_1BR_2ASS": {
+      "Couro TP1": null,
+      "COURO TP2": null,
+      "COURO TP3": null,
+      "COURO T1": null,
+      "COURO T2": null,
+      "COURO T3": null,
+      "COURO T4": null,
+      "TECIDO A": 12400,
+      "TECIDO B": 13214,
+      "TECIDO C": 14098,
+      "TECIDO D": 15371
+    },
+    "Hiato_1BR_1ASS": {
+      "Couro TP1": null,
+      "COURO TP2": null,
+      "COURO TP3": null,
+      "COURO T1": null,
+      "COURO T2": null,
+      "COURO T3": null,
+      "COURO T4": null,
+      "TECIDO A": 10090,
+      "TECIDO B": 10753,
+      "TECIDO C": 11472,
+      "TECIDO D": 12507
+    },
+    "Hiato_SBR": {
+      "Couro TP1": null,
+      "COURO TP2": null,
+      "COURO TP3": null,
+      "COURO T1": null,
+      "COURO T2": null,
+      "COURO T3": null,
+      "COURO T4": null,
+      "TECIDO A": 7097,
+      "TECIDO B": 7506,
+      "TECIDO C": 7949,
+      "TECIDO D": 8588
+    },
+    "Hiato_Chaise": {
+      "Couro TP1": null,
+      "COURO TP2": null,
+      "COURO TP3": null,
+      "COURO T1": null,
+      "COURO T2": null,
+      "COURO T3": null,
+      "COURO T4": null,
+      "TECIDO A": 15383,
+      "TECIDO B": 16349,
+      "TECIDO C": 17417,
+      "TECIDO D": 18946
+    },
+    "Hiato_Mesa": {
+      "Couro TP1": null,
+      "COURO TP2": null,
+      "COURO TP3": null,
+      "COURO T1": 3850,
+      "COURO T2": 4372,
+      "COURO T3": 4674,
+      "COURO T4": 4927,
+      "TECIDO A": null,
+      "TECIDO B": null,
+      "TECIDO C": null,
+      "TECIDO D": null
+    },
+    "Pier_1BR_2ASS": {},
+    "Pier_1BR": {
+      "TECIDO A": null
+    },
+    "Pier_SBR": {},
+    "Pier_Mesa": {},
+    "Pier_Canto": {},
+    "Pier_Pufe": {},
+    "Dapper": {},
+    "Eixo": {}
+  }
+}
