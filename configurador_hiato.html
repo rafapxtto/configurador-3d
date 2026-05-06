@@ -558,6 +558,7 @@ function hideTooltip() {
 
 // ── TEXTURE HELPERS ────────────────────────────────────────────────────────
 const texLoader = new THREE.TextureLoader();
+texLoader.crossOrigin = 'anonymous';
 const texCache  = {};
 
 function loadTex(url, isSRGB) {
@@ -657,6 +658,7 @@ function reapplyAll() {
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 const gltfLoader    = new GLTFLoader();
+gltfLoader.crossOrigin = 'anonymous';
 gltfLoader.setDRACOLoader(dracoLoader);
 
 function loadGLTF(def) {
@@ -854,7 +856,8 @@ function getFrontScreenshot() {
   controls.update();
   renderer.render(scene, camera);
 
-  const shot = renderer.domElement.toDataURL('image/jpeg', 0.92);
+  let shot = null;
+  try { shot = renderer.domElement.toDataURL('image/jpeg', 0.92); } catch(e) { console.warn('[Screenshot]', e.message); }
 
   // Restaura câmera
   camera.position.copy(savedPos);
@@ -1360,7 +1363,7 @@ async function generatePDF() {
     '<div style="font-size:9pt;opacity:.8">'+date+'</div></div>' +
 
     // 3D render screenshot
-    '<div style="width:100%;height:220px;background:#e8e3dc;border-radius:6px;border:1px solid #ddd4c8;margin-bottom:14px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="'+screenshot+'" style="width:50%;height:auto;max-height:200px;object-fit:contain;border-radius:4px;display:block"></div>' +
+    (screenshot ? '<div style="width:100%;height:220px;background:#e8e3dc;border-radius:6px;border:1px solid #ddd4c8;margin-bottom:14px;display:flex;align-items:center;justify-content:center;overflow:hidden"><img src="'+screenshot+'" style="width:50%;height:auto;max-height:200px;object-fit:contain;border-radius:4px;display:block"></div>' : '<div style="width:100%;height:60px;background:#e8e3dc;border-radius:6px;border:1px solid #ddd4c8;margin-bottom:14px;display:flex;align-items:center;justify-content:center;color:#999;font-size:12px">Imagem não disponível</div>') +
 
     // Módulos table
     '<div class="sec">M\xF3dulos selecionados</div>' +
