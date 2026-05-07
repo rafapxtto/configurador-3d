@@ -313,17 +313,6 @@
       "tex_normal": "Couro_Normal.png"
     },
     {
-      "id": "c_tp1",
-      "grupo_id": "couro",
-      "nome": "Couro TP1",
-      "hex": "#b87040",
-      "price_keys": [
-        "Couro TP1"
-      ],
-      "tex_color": "Couro_Color.png",
-      "tex_normal": "Couro_Normal.png"
-    },
-    {
       "id": "c_t4",
       "grupo_id": "couro",
       "nome": "Couro T4",
