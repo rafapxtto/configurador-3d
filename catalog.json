@@ -379,17 +379,6 @@
       "tex_normal": "Tecido_Normal.png"
     },
     {
-      "id": "t_tipoA",
-      "grupo_id": "tecido",
-      "nome": "Tipo A",
-      "hex": "#7a9a88",
-      "price_keys": [
-        "TECIDO A"
-      ],
-      "tex_color": "Tecido_Color.png",
-      "tex_normal": "Tecido_Normal.png"
-    },
-    {
       "id": "t_tipoB",
       "grupo_id": "tecido",
       "nome": "Tipo B",
