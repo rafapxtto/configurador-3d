@@ -379,17 +379,6 @@
       "tex_normal": "Tecido_Normal.png"
     },
     {
-      "id": "t_tipoB",
-      "grupo_id": "tecido",
-      "nome": "Tipo B",
-      "hex": "#4a6a58",
-      "price_keys": [
-        "Tecido Tipo B"
-      ],
-      "tex_color": "Tecido_Color (1).png",
-      "tex_normal": "Tecido_Normal.png"
-    },
-    {
       "id": "m_car",
       "grupo_id": "madeira",
       "nome": "Carvalho",
