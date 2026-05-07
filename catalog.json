@@ -384,7 +384,7 @@
       "nome": "Tipo A",
       "hex": "#7a9a88",
       "price_keys": [
-        "Tecido Tipo A"
+        "TECIDO A"
       ],
       "tex_color": "Tecido_Color.png",
       "tex_normal": "Tecido_Normal.png"
