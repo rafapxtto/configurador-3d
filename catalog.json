@@ -351,7 +351,7 @@
       "nome": "Bouclê",
       "hex": "#8aaa98",
       "price_keys": [
-        "Tecido Tipo A"
+        "TECIDO B"
       ],
       "tex_color": "Tecido_Color.png",
       "tex_normal": "Tecido_Normal.png"
