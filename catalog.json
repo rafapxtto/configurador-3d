@@ -313,17 +313,6 @@
       "tex_normal": "Couro_Normal.png"
     },
     {
-      "id": "c_t4",
-      "grupo_id": "couro",
-      "nome": "Couro T4",
-      "hex": "#7a3018",
-      "price_keys": [
-        "Couro T4"
-      ],
-      "tex_color": "Couro_2_Color.png",
-      "tex_normal": "Couro_2_Normal.png"
-    },
-    {
       "id": "t_chen",
       "grupo_id": "tecido",
       "nome": "Chenille",
